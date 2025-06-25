@@ -1,0 +1,115 @@
+﻿@model List<Monexia.Models.CurrencyViewModel>
+@using Newtonsoft.Json
+
+@{
+    ViewData["Title"] = "Döviz Kurları";
+    var updatedTime = (DateTime?)ViewBag.LastUpdated;
+    var currencyLabels = Model.Select(x => x.Code).ToList();
+    var currencyRates = Model.Select(x => x.Rate).ToList();
+    var minRate = currencyRates.Any() ? currencyRates.Min() : 0;
+    var maxRate = currencyRates.Any() ? currencyRates.Max() : 0;
+}
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fade-in-up">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100">Döviz Kurları</h1>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Türk Lirası karşısındaki anlık değerler.</p>
+        </div>
+        @if (updatedTime.HasValue)
+        {
+            <div class="text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-lg">
+                <span>Son Güncelleme: @updatedTime.Value.ToString("dd MMM yyyy, HH:mm")</span>
+            </div>
+        }
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Currency Cards -->
+        <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+            @foreach (var item in Model)
+            {
+                var range = maxRate - minRate;
+                var ratio = range > 0 ? (item.Rate - minRate) / range : 0;
+                var hue = 120 - (int)(ratio * 120); // green (120) -> red (0)
+                var bgColor = $"hsl({hue}, 70%, 97%)";
+                var darkBgColor = $"hsl({hue}, 70%, 15%)";
+                var textColor = $"hsl({hue}, 80%, 30%)";
+                var darkTextColor = $"hsl({hue}, 70%, 70%)";
+
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden transition-transform hover:scale-105" style="--bg-color: @bgColor; --text-color: @textColor; --dark-bg-color: @darkBgColor; --dark-text-color: @darkTextColor;">
+                    <div class="p-5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xl font-bold text-gray-800 dark:text-gray-100">@item.Code</span>
+                            <a class="text-xs px-3 py-1 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition" asp-controller="Currency" asp-action="Detail" asp-route-symbol="@item.Code">Detay</a>
+                        </div>
+                        <p class="text-2xl font-semibold text-gray-900 dark:text-gray-200 mt-2">
+                            @item.Rate.ToString("0.####")
+                            <span class="text-base text-gray-500 ml-1">TRY</span>
+                        </p>
+                    </div>
+                    <div class="h-2 bg-[var(--bg-color)] dark:bg-[var(--dark-bg-color)]">
+                        <div class="h-2 bg-[var(--text-color)] dark:bg-[var(--dark-text-color)]" style="width: @((ratio * 100).ToString(System.Globalization.CultureInfo.InvariantCulture))%;"></div>
+                    </div>
+                </div>
+            }
+        </div>
+        <!-- Chart -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 flex flex-col">
+            <h3 class="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-200">Oranlara Göre Dağılım</h3>
+            <div class="relative h-96">
+                <canvas id="currencyChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const labels = @Html.Raw(JsonConvert.SerializeObject(currencyLabels));
+        const data = @Html.Raw(JsonConvert.SerializeObject(currencyRates));
+        const min = Math.min(...data);
+        const max = Math.max(...data);
+        const backgroundColors = data.map(val => {
+            const ratio = (val - min) / (max - min);
+            const hue = Math.round(ratio * 120);
+            return `hsl(${hue}, 70%, 50%)`;
+        });
+        const ctx = document.getElementById('currencyChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'TL Değeri',
+                    data: data,
+                    backgroundColor: backgroundColors,
+                    borderColor: 'rgba(0,0,0,0.1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            color: document.body.classList.contains('dark') ? '#9ca3af' : '#4b5563'
+                        }
+                     },
+                     x: {
+                         ticks: {
+                             color: document.body.classList.contains('dark') ? '#9ca3af' : '#4b5563'
+                         }
+                     }
+                }
+            }
+        });
+    </script>
+}

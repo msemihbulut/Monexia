@@ -1,0 +1,10 @@
+﻿@model dynamic
+<button class="flex justify-center items-center rounded-2xl font-extrabold shadow-sm border border-transparent focus:outline-none focus:ring-2 focus:ring-indigo-300 dark:focus:ring-indigo-700 transition-all duration-200 bg-indigo-600 text-white hover:bg-indigo-700 hover:text-white py-3 px-8 text-lg @(Model?.Class)"
+        type="@(Model?.Type ?? "button")"
+        @(Model?.Disabled == true ? "disabled" : "")>
+    @if (Model?.Loading == true)
+    {
+        <span class="inline-block w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin align-middle mr-2"></span>
+    }
+    @Model?.Text
+</button> 

@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "Sıkça Sorulan Sorular";
+}
+
+<div class="bg-white dark:bg-[#111827] animate-fade-in">
+    <div class="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 lg:py-40">
+        <div class="mx-auto max-w-4xl divide-y divide-gray-900/10 dark:divide-white/10">
+            <h2 class="text-4xl font-bold leading-10 tracking-tight text-gray-900 dark:text-white">Sıkça Sorulan Sorular</h2>
+            <dl class="mt-10 space-y-6 divide-y divide-gray-900/10 dark:divide-white/10">
+
+                <div x-data="{ open: false }" class="pt-6">
+                    <dt>
+                        <button x-on:click="open = !open" type="button" class="flex w-full items-start justify-between text-left text-gray-900 dark:text-white" aria-controls="faq-0" aria-expanded="false">
+                            <span class="text-base font-semibold leading-7">Monexia'nın temel amacı nedir?</span>
+                            <span class="ml-6 flex h-7 items-center">
+                                <svg x-show="!open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" /></svg>
+                                <svg x-show="open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" /></svg>
+                            </span>
+                        </button>
+                    </dt>
+                    <dd x-show="open" class="mt-2 pr-12" id="faq-0">
+                        <p class="text-base leading-7 text-gray-600 dark:text-gray-300">Monexia, kullanıcıların tüm finansal varlıklarını (banka hesapları, döviz, kripto, hisse senedi vb.) tek bir yerden yönetmelerini, bütçe oluşturmalarını, harcamalarını takip etmelerini ve yapay zeka destekli analizlerle finansal sağlıklarını iyileştirmelerini sağlayan modern bir finansal yönetim platformudur.</p>
+                    </dd>
+                </div>
+
+                <div x-data="{ open: false }" class="pt-6">
+                    <dt>
+                        <button x-on:click="open = !open" type="button" class="flex w-full items-start justify-between text-left text-gray-900 dark:text-white" aria-controls="faq-1" aria-expanded="false">
+                            <span class="text-base font-semibold leading-7">Yapay zeka özellikleri nelerdir ve nasıl çalışır?</span>
+                            <span class="ml-6 flex h-7 items-center">
+                                <svg x-show="!open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" /></svg>
+                                <svg x-show="open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" /></svg>
+                            </span>
+                        </button>
+                    </dt>
+                    <dd x-show="open" class="mt-2 pr-12" id="faq-1">
+                        <p class="text-base leading-7 text-gray-600 dark:text-gray-300">Monexia, OpenAI teknolojisini kullanarak çeşitli akıllı özellikler sunar:</p>
+                        <ul class="list-disc pl-5 mt-2 text-base leading-7 text-gray-600 dark:text-gray-300">
+                            <li><b>Akıllı Kategori Önerisi:</b> Bir harcama açıklaması girdiğinizde, yapay zeka otomatik olarak en uygun kategoriyi önerir.</li>
+                            <li><b>Akıllı Bütçe Önerisi:</b> Geçmiş harcama verilerinizi analiz ederek size özel ve gerçekçi aylık bütçe limitleri tavsiye eder.</li>
+                            <li><b>Rapor Analizi:</b> Aylık finansal raporlarınız için durumu özetleyen ve önemli noktaları vurgulayan yönetici özetleri oluşturur.</li>
+                            <li><b>Finans Koçu (Ask Monexia):</b> Finansal verileriniz hakkında "Bu ay en çok neye para harcadım?" gibi doğal dilde sorular sorup kişiselleştirilmiş cevaplar alabilirsiniz.</li>
+                        </ul>
+                    </dd>
+                </div>
+
+                <div x-data="{ open: false }" class="pt-6">
+                    <dt>
+                        <button x-on:click="open = !open" type="button" class="flex w-full items-start justify-between text-left text-gray-900 dark:text-white" aria-controls="faq-2" aria-expanded="false">
+                            <span class="text-base font-semibold leading-7">Verilerimin güvenliği nasıl sağlanıyor?</span>
+                            <span class="ml-6 flex h-7 items-center">
+                                <svg x-show="!open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" /></svg>
+                                <svg x-show="open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" /></svg>
+                            </span>
+                        </button>
+                    </dt>
+                    <dd x-show="open" class="mt-2 pr-12" id="faq-2">
+                        <p class="text-base leading-7 text-gray-600 dark:text-gray-300">Güvenliğiniz bizim için en büyük önceliktir. Tüm verileriniz modern şifreleme standartları ile korunmaktadır. ASP.NET Core Identity altyapısı ile güçlü parola politikaları ve güvenli kimlik doğrulama sağlanır. Yapay zeka analizleri için gönderilen veriler anonimleştirilir ve kişisel kimliğinizle ilişkilendirilmez.</p>
+                    </dd>
+                </div>
+
+                <div x-data="{ open: false }" class="pt-6">
+                    <dt>
+                        <button x-on:click="open = !open" type="button" class="flex w-full items-start justify-between text-left text-gray-900 dark:text-white" aria-controls="faq-3" aria-expanded="false">
+                            <span class="text-base font-semibold leading-7">Monexia'yı kullanmak ücretli mi?</span>
+                            <span class="ml-6 flex h-7 items-center">
+                                <svg x-show="!open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" /></svg>
+                                <svg x-show="open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" /></svg>
+                            </span>
+                        </button>
+                    </dt>
+                    <dd x-show="open" class="mt-2 pr-12" id="faq-3">
+                        <p class="text-base leading-7 text-gray-600 dark:text-gray-300">Monexia'nın tüm temel özellikleri şu an için tamamen ücretsizdir. Gelecekte, daha profesyonel ve kapsamlı araçlar içeren premium bir paket sunma olasılığımız bulunmaktadır, ancak mevcut özellikler her zaman ücretsiz kalacaktır.</p>
+                    </dd>
+                </div>
+
+            </dl>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+}

@@ -1,0 +1,449 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Monexia.Models
+@using System.Globalization
+@using Monexia.Helpers
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model List<Transaction>
+
+@{
+    ViewData["Title"] = "Anasayfa";
+    var goals = ViewBag.Goals as List<Goal> ?? new List<Goal>();
+}
+
+<div class="w-full px-2 md:px-4 py-8">
+    <div class="text-center mb-10 animate-fade-in">
+        <h1 class="text-5xl font-extrabold mb-2">
+            <img src="~/img/monexia-logo.png" alt="Monexia Logo" class="h-14 w-auto inline-block -mb-2" />
+        </h1>
+        @if (SignInManager.IsSignedIn(User))
+        {
+            var currentUser = await UserManager.GetUserAsync(User);
+            <p class="text-lg text-purple-700 dark:text-purple-300 font-semibold">Hoş Geldiniz! @currentUser.Name @currentUser.Surname</p>
+        }
+        else
+        {
+            <p class="text-lg text-purple-700 dark:text-purple-300 font-semibold">Hoş Geldiniz!</p>
+        }
+    </div>
+
+    @if (!string.IsNullOrEmpty(ViewBag.AIAdvice as string))
+    {
+        <div class="bg-gradient-to-r from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800 border-l-4 border-blue-500 text-blue-900 dark:text-blue-100 p-5 rounded-2xl mb-6 shadow-lg animate-fade-in-up">
+            <div class="font-semibold mb-1 flex items-center gap-2"><span>🤖</span> Yapay Zeka Tavsiyesi</div>
+            <div id="ai-advice-content" class="prose prose-sm dark:prose-invert max-w-none"></div>
+        </div>
+    }
+
+    @if (ViewBag.LimitWarnings is List<Monexia.Models.LimitWarningViewModel> warnings && warnings.Any())
+    {
+        <div class="bg-gradient-to-r from-yellow-100 to-yellow-200 dark:from-yellow-900 dark:to-yellow-800 border-l-4 border-yellow-500 text-yellow-900 dark:text-yellow-100 p-5 rounded-2xl mb-6 shadow-lg animate-fade-in-up">
+            <div class="font-semibold mb-1 flex items-center gap-2"><span>⚠</span> Harcama Limiti Uyarısı</div>
+            <ul class="list-disc pl-5">
+                @foreach (var w in warnings)
+                {
+                    <li>
+                        <strong>@CommonHelper.ToHumanReadable(w.Category):</strong> Bu ay <strong>@w.CurrentSpent.ToString("C", new CultureInfo("tr-TR"))</strong> harcandı (Limit: <strong>@w.Limit.ToString("C", new CultureInfo("tr-TR"))</strong>, Kullanım: <strong>%@Math.Round(w.PercentageUsed)</strong>)
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8 animate-fade-in-up">
+        <div class="bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900 rounded-2xl shadow-lg p-4 flex flex-col items-center">
+            <div class="text-base font-bold text-indigo-700 dark:text-indigo-300 mb-1">@ViewBag.TotalTransactionCount</div>
+            <div class="text-xs text-gray-700 dark:text-gray-200">Toplam İşlem</div>
+        </div>
+        <div class="bg-gradient-to-br from-pink-100 to-yellow-100 dark:from-pink-900 dark:to-yellow-900 rounded-2xl shadow-lg p-4 flex flex-col items-center">
+            <div class="text-base font-bold text-pink-700 dark:text-pink-300 mb-1">@ViewBag.TotalGoalCount</div>
+            <div class="text-xs text-gray-700 dark:text-gray-200">Toplam Hedef</div>
+        </div>
+        <div class="bg-gradient-to-br from-cyan-100 to-blue-100 dark:from-cyan-900 dark:to-blue-900 rounded-2xl shadow-lg p-4 flex flex-col items-center">
+            <div class="text-base font-bold text-cyan-700 dark:text-cyan-300 mb-1">@ViewBag.TotalLimitCount</div>
+            <div class="text-xs text-gray-700 dark:text-gray-200">Toplam Limit</div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 animate-fade-in-up">
+        <div class="bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900 dark:to-green-900/80 rounded-2xl shadow-lg p-6 flex flex-col items-center">
+            <div class="text-2xl font-bold text-green-700 dark:text-green-300 mb-1">@ViewBag.TotalIncome.ToString("C", new CultureInfo("tr-TR"))</div>
+            <div class="text-sm text-gray-700 dark:text-gray-200">Toplam Gelir</div>
+        </div>
+        <div class="bg-gradient-to-br from-red-100 to-red-200 dark:from-red-900 dark:to-red-900/80 rounded-2xl shadow-lg p-6 flex flex-col items-center">
+            <div class="text-2xl font-bold text-red-700 dark:text-red-300 mb-1">@ViewBag.TotalExpense.ToString("C", new CultureInfo("tr-TR"))</div>
+            <div class="text-sm text-gray-700 dark:text-gray-200">Toplam Gider</div>
+        </div>
+        <div class="bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900/80 rounded-2xl shadow-lg p-6 flex flex-col items-center">
+            <div class="text-2xl font-bold text-indigo-700 dark:text-indigo-300 mb-1">@ViewBag.NetBalance.ToString("C", new CultureInfo("tr-TR"))</div>
+            <div class="text-sm text-gray-700 dark:text-gray-200">Net Bakiye</div>
+        </div>
+        <div class="bg-gradient-to-br from-yellow-100 to-pink-100 dark:from-yellow-900 dark:to-pink-900/80 rounded-2xl shadow-lg p-6 flex flex-col items-center">
+            <div class="text-2xl font-bold text-yellow-700 dark:text-yellow-300 mb-1">@CommonHelper.ToHumanReadable(ViewBag.TopCategory)</div>
+            <div class="text-sm text-gray-700 dark:text-gray-200">En Çok Harcama</div>
+        </div>
+    </div>
+
+    <!-- Son İşlemler -->
+    <div class="mb-10 animate-fade-in-up">
+        <div class="bg-white dark:bg-gray-900/80 backdrop-blur-sm shadow-2xl rounded-2xl overflow-hidden">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between bg-gradient-to-r from-indigo-500 to-purple-500 px-8 py-5">
+                <h2 class="text-xl md:text-2xl font-semibold text-white">Son İşlemler</h2>
+                <a class="mt-3 md:mt-0 px-5 py-2 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition shadow-lg text-base font-semibold" asp-controller="Transaction" asp-action="Index">Tüm İşlemleri Gör</a>
+            </div>
+            <div class="p-4 sm:p-6 bg-gray-50 dark:bg-gray-800/50">
+                @if (Model?.Any() == true)
+                {
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full text-base text-gray-800 dark:text-gray-100">
+                            <thead class="bg-gray-100 dark:bg-gray-700/50">
+                                <tr>
+                                    <th class="px-5 py-3 text-left font-bold">Tarih</th>
+                                    <th class="px-5 py-3 text-left font-bold">Tür</th>
+                                    <th class="px-5 py-3 text-left font-bold">Kategori</th>
+                                    <th class="px-5 py-3 text-left font-bold">Miktar</th>
+                                    <th class="px-5 py-3 text-left font-bold">Açıklama</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var t in Model.Take(7))
+                                {
+                                    <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-200/50 dark:hover:bg-gray-900/50 transition">
+                                        <td class="px-5 py-3">@t.TransactionDate.ToString("dd.MM.yyyy")</td>
+                                        <td class="px-5 py-3">
+                                            @if (t.Type == TransactionType.Income)
+                                            {
+                                                <span class="px-3 py-1 bg-green-100 text-green-700 rounded-lg text-sm font-semibold">Gelir</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="px-3 py-1 bg-red-100 text-red-700 rounded-lg text-sm font-semibold">Gider</span>
+                                            }
+                                    </td>
+                                    <td class="px-5 py-3">
+                                        @(t.Type == TransactionType.Income
+                                                                            ? (t.IncomeCategory != null ? CommonHelper.ToHumanReadable(t.IncomeCategory.ToString()) : "-")
+                                                                            : (t.ExpenseCategory != null ? CommonHelper.ToHumanReadable(t.ExpenseCategory.ToString()) : "-"))
+                                </td>
+                                <td class="px-5 py-3">@t.Amount.ToString("C", new CultureInfo("tr-TR"))</td>
+                                <td class="px-5 py-3">@t.Description</td>
+                            </tr>
+                                                        }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="p-4 text-center text-blue-800 dark:text-blue-200 bg-blue-50 dark:bg-blue-900/50 rounded-2xl">Henüz işlem kaydınız bulunmamaktadır.</div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10 animate-fade-in-up">
+        <!-- Limitler -->
+        <div class="bg-white dark:bg-gray-900/80 backdrop-blur-sm shadow-2xl rounded-2xl overflow-hidden">
+            <div class="bg-gradient-to-r from-cyan-500 to-blue-500 px-8 py-5 flex justify-between items-center">
+                <h2 class="text-xl font-semibold text-white">Aylık Limitleriniz</h2>
+                <a class="px-5 py-2 bg-cyan-500 text-white rounded-xl hover:bg-cyan-600 transition shadow-lg text-sm font-semibold" asp-controller="SpendingLimit" asp-action="Index">Yönet</a>
+            </div>
+            <div class="p-6 bg-gray-50 dark:bg-gray-800/50">
+                @if (ViewBag.LimitUsages is List<LimitUsageViewModel> limitData && limitData.Any())
+                {
+                    foreach (var item in limitData)
+                    {
+                        var percent = Math.Round(item.UsagePercent);
+                        var barColor = percent >= 80 ? "bg-red-500" : percent >= 50 ? "bg-yellow-400" : "bg-green-500";
+                        <div class="mb-4">
+                            <div class="flex justify-between mb-1">
+                                <span class="font-semibold text-gray-800 dark:text-gray-200">
+                                    @CommonHelper.ToHumanReadable(item.Category)
+                                </span>
+                                <span class="text-sm text-gray-500 dark:text-gray-300">@item.Spent.ToString("C0", new CultureInfo("tr-TR")) / @item.Limit.ToString("C0", new CultureInfo("tr-TR"))</span>
+                            </div>
+                            <div class="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full">
+                                <div class="@barColor h-3 rounded-full transition-all" style="width: @percent%"></div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="p-4 text-center text-blue-800 dark:text-blue-200 bg-blue-50 dark:bg-blue-900/50 rounded-2xl">Bu ay için tanımlı bir limitiniz yok.</div>
+                }
+            </div>
+        </div>
+        <!-- Hedeflerim -->
+        <div class="bg-white dark:bg-gray-900/80 backdrop-blur-sm shadow-2xl rounded-2xl overflow-hidden">
+            <div class="bg-gradient-to-r from-amber-500 to-orange-500 px-8 py-5 flex justify-between items-center">
+                <h2 class="text-xl font-semibold text-white">Hedefleriniz</h2>
+                <a class="px-5 py-2 bg-amber-500 text-white rounded-xl hover:bg-amber-600 transition shadow-lg text-sm font-semibold" asp-controller="Goal" asp-action="Index">Yönet</a>
+            </div>
+            <div class="p-6 bg-gray-50 dark:bg-gray-800/50">
+                @if (goals.Any())
+                {
+                    foreach (var item in goals.Take(3))
+                    {
+                        var percent = Math.Round(item.CurrentAmount / item.TargetAmount * 100);
+                        <div class="mb-4">
+                            <div class="flex justify-between mb-1">
+                                <span class="font-semibold text-gray-800 dark:text-gray-200">
+                                    @item.Name
+                                </span>
+                                <span class="text-sm text-gray-500 dark:text-gray-300">@item.CurrentAmount.ToString("C0", new CultureInfo("tr-TR")) / @item.TargetAmount.ToString("C0", new CultureInfo("tr-TR"))</span>
+                            </div>
+                            <div class="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full">
+                                <div class="bg-amber-500 h-3 rounded-full transition-all" style="width: @percent%"></div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="p-4 text-center text-blue-800 dark:text-blue-200 bg-blue-50 dark:bg-blue-900/50 rounded-2xl">Henüz bir hedefiniz yok.</div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Grafikler -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10 animate-fade-in-up">
+        <div class="bg-white dark:bg-gray-900/80 backdrop-blur-sm shadow-2xl rounded-2xl">
+            <div class="bg-gradient-to-r from-indigo-500 to-purple-500 px-8 py-5">
+                <h2 class="text-xl font-semibold text-white">Gelir-Gider Dağılımı</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-6 items-center">
+                <div class="w-full h-64">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+                <div>
+                    <ul id="category-legend" class="space-y-2"></ul>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white dark:bg-gray-900/80 backdrop-blur-sm shadow-2xl rounded-2xl">
+            <div class="bg-gradient-to-r from-red-500 to-pink-500 px-8 py-5">
+                <h2 class="text-xl font-semibold text-white">Aylık Harcama Eğilimi</h2>
+            </div>
+            <div class="p-6">
+                <canvas id="expenseChart" class="w-full h-64"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ekstra Grafikler -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10 animate-fade-in-up">
+        <div class="bg-white dark:bg-gray-900/80 backdrop-blur-sm shadow-2xl rounded-2xl">
+            <div class="bg-gradient-to-r from-green-500 to-indigo-500 px-8 py-5">
+                <h2 class="text-xl font-semibold text-white">Kümülatif Bakiye</h2>
+            </div>
+            <div class="p-6">
+                <canvas id="balanceChart" class="w-full h-64"></canvas>
+            </div>
+        </div>
+        <div class="bg-white dark:bg-gray-900/80 backdrop-blur-sm shadow-2xl rounded-2xl">
+            <div class="bg-gradient-to-r from-purple-500 to-pink-500 px-8 py-5">
+                <h2 class="text-xl font-semibold text-white">Yıllık Gelir-Gider Karşılaştırması</h2>
+            </div>
+            <div class="p-6">
+                <canvas id="yearlyCompareChart" class="w-full h-64"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="grid grid-1 mb-10 animate-fade-in-up">
+        <div class="bg-white dark:bg-gray-900/80 backdrop-blur-sm shadow-2xl rounded-2xl">
+            <div class="bg-gradient-to-r from-yellow-500 to-pink-500 px-8 py-5">
+                <h2 class="text-xl font-semibold text-white">En Çok Harcanan/Kazanılan Kategoriler</h2>
+            </div>
+            <div class="p-6">
+                <canvas id="topCategoriesChart" class="w-full h-96"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Finans Skoru Kartı -->
+    <div class="mb-10 animate-fade-in-up w-full max-w-md mx-auto">
+        <div class="bg-white dark:bg-gray-900/80 backdrop-blur-sm shadow-2xl rounded-2xl overflow-hidden">
+            <div class="bg-gradient-to-r from-green-400 to-purple-500 px-8 py-5">
+                <h2 class="text-xl font-semibold text-white">Kişisel Finans Skoru</h2>
+            </div>
+            <div class="flex flex-col items-center justify-center p-10 relative">
+                <canvas id="financeScoreGauge" class="w-48 h-48"></canvas>
+                <div class="absolute text-5xl font-extrabold text-purple-600 dark:text-purple-300" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">@ViewBag.FinanceScore</div>
+                <div class="text-gray-700 dark:text-gray-200 text-center mt-4 text-sm">Bu skor; gelir/gider oranı, limit aşımı ve hedef başarısı gibi kriterlere göre hesaplanır.</div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        const rawAdvice = @Html.Raw(Json.Serialize(ViewBag.AIAdvice as string ?? ""));
+        if (rawAdvice) {
+            document.getElementById('ai-advice-content').innerHTML = marked.parse(rawAdvice);
+        }
+
+        const categoryRawData = @Html.Raw(ViewBag.CategorySummary ?? "[]");
+        const expenseData = @Html.Raw(ViewBag.MonthlyExpenses ?? "[]");
+        const incomeData = @Html.Raw(ViewBag.MonthlyIncomes ?? "[]");
+        const balanceData = @Html.Raw(ViewBag.CumulativeBalanceData ?? "{}");
+        const yearlyCompareData = @Html.Raw(ViewBag.YearlyCompareData ?? "{}");
+        const topCategoriesData = @Html.Raw(ViewBag.TopCategoriesData ?? "{}");
+        const financeScore = @(ViewBag.FinanceScore ?? 0);
+
+        const categoryMap = { "Income": "Gelir", "Expense": "Gider" };
+        const colors = ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#f97316', '#8b5cf6', '#ec4899'];
+
+        if (document.getElementById('categoryChart') && categoryRawData.length > 0) {
+            const total = categoryRawData.reduce((acc, curr) => acc + curr.Total, 0);
+            const legendContainer = document.getElementById('category-legend');
+
+            const chartData = {
+                labels: categoryRawData.map(x => categoryMap[x.Category] || CommonHelper.ToHumanReadable(x.Category)),
+                datasets: [{
+                    data: categoryRawData.map(x => x.Total),
+                    backgroundColor: colors,
+                    borderColor: 'rgba(255, 255, 255, 0.1)',
+                    borderWidth: 1
+                }]
+            };
+
+            new Chart(document.getElementById('categoryChart'), {
+                type: 'pie',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            chartData.labels.forEach((label, i) => {
+                const value = chartData.datasets[0].data[i];
+                const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                const li = document.createElement('li');
+                li.classList.add('flex', 'items-center', 'text-sm');
+                li.innerHTML = `
+                    <span class="w-4 h-4 mr-3 rounded-full" style="background-color: ${colors[i]}"></span>
+                    <span class="font-semibold text-gray-700 dark:text-gray-200">${label}:</span>
+                    <span class="ml-auto text-gray-600 dark:text-gray-300">${value.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })} (${percentage}%)</span>
+                `;
+                legendContainer.appendChild(li);
+            });
+        }
+
+        if (document.getElementById('expenseChart') && expenseData.length > 0) {
+            new Chart(document.getElementById('expenseChart'), {
+                type: 'bar',
+                data: {
+                    labels: expenseData.map(x => x.Month),
+                    datasets: [{
+                        label: 'Gider Tutarı',
+                        data: expenseData.map(x => x.Total),
+                        backgroundColor: '#e74a3b'
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+            });
+        }
+
+        if (document.getElementById('incomeChart') && incomeData.length > 0) {
+            new Chart(document.getElementById('incomeChart'), {
+                type: 'bar',
+                data: {
+                    labels: incomeData.map(x => x.Month),
+                    datasets: [{
+                        label: 'Gelir Tutarı',
+                        data: incomeData.map(x => x.Total),
+                        backgroundColor: '#1cc88a'
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+            });
+        }
+
+        if (document.getElementById('balanceChart') && balanceData.labels) {
+             new Chart(document.getElementById('balanceChart'), {
+                type: 'line',
+                data: {
+                    labels: balanceData.labels,
+                    datasets: [{
+                        label: 'Bakiye',
+                        data: balanceData.data,
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99,102,241,0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        if (document.getElementById('yearlyCompareChart') && yearlyCompareData.labels) {
+            new Chart(document.getElementById('yearlyCompareChart'), {
+                type: 'bar',
+                data: {
+                    labels: yearlyCompareData.labels,
+                    datasets: [
+                        { label: 'Gelir', data: yearlyCompareData.incomeData, backgroundColor: '#22c55e' },
+                        { label: 'Gider', data: yearlyCompareData.expenseData, backgroundColor: '#ef4444' }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+            });
+        }
+
+        if (document.getElementById('topCategoriesChart') && topCategoriesData.labels) {
+            new Chart(document.getElementById('topCategoriesChart'), {
+                type: 'bar',
+                data: {
+                    labels: topCategoriesData.labels,
+                    datasets: [
+                        { label: 'Harcama', data: topCategoriesData.expenseData, backgroundColor: '#f59e42' },
+                        { label: 'Gelir', data: topCategoriesData.incomeData, backgroundColor: '#4ade80' }
+                    ]
+                },
+                options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { beginAtZero: true } } }
+            });
+        }
+
+        if (document.getElementById('financeScoreGauge')) {
+            new Chart(document.getElementById('financeScoreGauge'), {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [financeScore, 100 - financeScore],
+                        backgroundColor: ['#8b5cf6', '#e5e7eb'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    cutout: '80%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false }
+                    },
+                    animation: {
+                        animateRotate: true
+                    }
+                }
+            });
+        }
+        // Helper function for JS
+        const CommonHelper = {
+            ToHumanReadable: function(str) {
+                if (!str) return '';
+                return str.replace(/([A-Z])/g, ' $1').replace(/^./, function(t) { return t.toUpperCase(); }).trim();
+            }
+        };
+
+    </script>
+}

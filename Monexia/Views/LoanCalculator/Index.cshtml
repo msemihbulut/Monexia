@@ -1,0 +1,94 @@
+﻿@{
+    ViewData["Title"] = "Kredi Hesaplama";
+    var plan = ViewBag.Plan as IEnumerable<dynamic>;
+    string FormatCurrency(object value) => $"{Convert.ToDecimal(value):N2} ₺";
+}
+
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 animate-fade-in">
+    <div class="max-w-4xl mx-auto space-y-12">
+
+        <div class="text-center">
+            <svg class="w-16 h-16 mx-auto text-purple-500 mb-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414-.336.75-.75.75h-.75m0-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-1.5a1.125 1.125 0 01-1.125-1.125v-9.75c0-.621.504-1.125 1.125-1.125h1.5ZM12 4.5v15m0 0a2.25 2.25 0 00-2.25 2.25c0 1.242 1.008 2.25 2.25 2.25s2.25-1.008 2.25-2.25a2.25 2.25 0 00-2.25-2.25z"></path></svg>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white">
+                Kredi Hesaplama Aracı
+            </h1>
+            <p class="mt-4 text-lg text-gray-500 dark:text-gray-400">
+                İhtiyaç, taşıt veya konut kredisi anapara, faiz ve taksit detaylarını anında öğrenin.
+            </p>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800/50 rounded-2xl shadow-xl p-8 md:p-10">
+            <form method="post" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-end">
+                <div class="lg:col-span-1">
+                    <label for="amount" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Kredi Tutarı (₺)</label>
+                    <input type="number" step="100" min="0" id="amount" name="amount" value="@ViewBag.Amount" class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700/50 px-4 py-3 text-gray-900 dark:text-gray-100 focus:border-purple-500 focus:ring-purple-500" placeholder="100000" required>
+                </div>
+                <div class="lg:col-span-1">
+                    <label for="interest" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Aylık Faiz Oranı (%)</label>
+                    <input type="number" step="0.01" min="0" id="interest" name="interest" value="@ViewBag.Interest" class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700/50 px-4 py-3 text-gray-900 dark:text-gray-100 focus:border-purple-500 focus:ring-purple-500" placeholder="3.49" required>
+                </div>
+                <div class="lg:col-span-1">
+                    <label for="term" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Vade (Ay)</label>
+                    <input type="number" min="1" id="term" name="term" value="@ViewBag.Term" class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700/50 px-4 py-3 text-gray-900 dark:text-gray-100 focus:border-purple-500 focus:ring-purple-500" placeholder="12" required>
+                </div>
+                <div class="md:col-span-2 lg:col-span-3">
+                    <button type="submit" class="w-full mt-4 py-3.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold text-lg shadow-lg hover:shadow-purple-500/30 hover:scale-[1.02] transition-all duration-300">
+                        <span class="flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3.25m-3.25 3.25H12M9 10h.01M12 10h.01M15 10h.01M6 21h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"></path></svg>
+                            Kredi Ödeme Planını Hesapla
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        @if (plan != null)
+        {
+            <div class="bg-white dark:bg-gray-800/50 rounded-2xl shadow-xl overflow-hidden animate-fade-in-up">
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Ödeme Planı Özeti</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+                        <div class="bg-purple-50 dark:bg-purple-900/30 p-6 rounded-xl">
+                            <div class="text-sm text-purple-600 dark:text-purple-300 mb-1">Aylık Taksit</div>
+                            <div class="text-3xl font-bold text-purple-800 dark:text-purple-100">@FormatCurrency(ViewBag.MonthlyPayment)</div>
+                        </div>
+                        <div class="bg-indigo-50 dark:bg-indigo-900/30 p-6 rounded-xl">
+                            <div class="text-sm text-indigo-600 dark:text-indigo-300 mb-1">Toplam Geri Ödeme</div>
+                            <div class="text-3xl font-bold text-indigo-800 dark:text-indigo-100">@FormatCurrency(ViewBag.TotalPayment)</div>
+                        </div>
+                        <div class="bg-gray-100 dark:bg-gray-700/50 p-6 rounded-xl">
+                            <div class="text-sm text-gray-500 dark:text-gray-400 mb-1">Toplam Faiz Maliyeti</div>
+                            <div class="text-3xl font-bold text-gray-800 dark:text-gray-200">@FormatCurrency(Convert.ToDecimal(ViewBag.TotalPayment) - Convert.ToDecimal(ViewBag.Amount))</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="min-w-full text-sm">
+                        <thead class="bg-gray-50 dark:bg-gray-700/50">
+                            <tr>
+                                <th scope="col" class="py-3.5 px-4 text-left font-semibold text-gray-600 dark:text-gray-300">Ay</th>
+                                <th scope="col" class="py-3.5 px-4 text-right font-semibold text-gray-600 dark:text-gray-300">Taksit Tutarı</th>
+                                <th scope="col" class="py-3.5 px-4 text-right font-semibold text-gray-600 dark:text-gray-300">Anapara</th>
+                                <th scope="col" class="py-3.5 px-4 text-right font-semibold text-gray-600 dark:text-gray-300">Faiz</th>
+                                <th scope="col" class="py-3.5 px-4 text-right font-semibold text-gray-600 dark:text-gray-300">Kalan Bakiye</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                            @foreach (var item in plan)
+                            {
+                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                                    <td class="px-4 py-4 font-medium text-gray-900 dark:text-white">@item.Month</td>
+                                    <td class="px-4 py-4 text-right text-gray-600 dark:text-gray-300">@FormatCurrency(item.MonthlyPayment)</td>
+                                    <td class="px-4 py-4 text-right text-gray-600 dark:text-gray-300">@FormatCurrency(item.Principal)</td>
+                                    <td class="px-4 py-4 text-right text-gray-600 dark:text-gray-300">@FormatCurrency(item.Interest)</td>
+                                    <td class="px-4 py-4 text-right font-medium text-purple-600 dark:text-purple-400">@FormatCurrency(item.Remaining)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+</div> 

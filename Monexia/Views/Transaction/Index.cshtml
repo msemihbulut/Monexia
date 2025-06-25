@@ -1,0 +1,186 @@
+﻿@using Newtonsoft.Json
+@using Monexia.Helpers
+@model IEnumerable<Monexia.Models.Transaction>
+
+@{
+    ViewData["Title"] = "İşlemlerim";
+}
+
+<div class="max-w-7xl mx-auto px-2 md:px-8 py-8 animate-fade-in-up">
+    <div class="flex flex-col md:flex-row items-start gap-8">
+        <div class="flex-1 min-w-0 flex flex-col gap-8 pr-0 md:pr-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-2">
+                <h2 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-500 to-indigo-400 dark:from-purple-300 dark:via-pink-300 dark:to-indigo-200">İşlemlerim</h2>
+                <a class="px-6 py-2 rounded-xl bg-green-500 text-white hover:bg-green-600 transition shadow text-base font-semibold" asp-action="Create">+ İşlem Ekle</a>
+            </div>
+            <form method="get" asp-controller="Transaction" asp-action="Index" class="bg-white/90 dark:bg-gray-900/90 rounded-2xl shadow-xl p-6 flex flex-wrap gap-4 items-end animate-fade-in w-full max-w-none">
+                <div class="flex-1 min-w-[140px]">
+                    <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Kategori</label>
+                    <select name="categoryFilter" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <option value="">Tüm Kategoriler</option>
+                        <option value="Income" selected="@(ViewBag.CurrentCategory == "Income" ? "selected" : null)">Gelir</option>
+                        <option value="Expense" selected="@(ViewBag.CurrentCategory == "Expense" ? "selected" : null)">Gider</option>
+                    </select>
+                </div>
+                <div class="flex-1 min-w-[140px]">
+                    <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Açıklama / Tür</label>
+                    <input name="searchTerm" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Ara..." value="@ViewBag.CurrentSearch" />
+                </div>
+                <div class="flex-1 min-w-[140px]">
+                    <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Başlangıç Tarihi</label>
+                    <input name="startDate" type="date" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500" value="@ViewBag.StartDate" />
+                </div>
+                <div class="flex-1 min-w-[140px]">
+                    <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Bitiş Tarihi</label>
+                    <input name="endDate" type="date" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500" value="@ViewBag.EndDate" />
+                </div>
+                <div class="flex-1 min-w-[140px]">
+                    <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Sıralama</label>
+                    <select name="sortOrder" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <option value="desc" selected="@(ViewBag.CurrentSort == "desc" ? "selected" : null)">Yeniden eskiye</option>
+                        <option value="asc" selected="@(ViewBag.CurrentSort == "asc" ? "selected" : null)">Eskiden yeniye</option>
+                    </select>
+                </div>
+                <div class="flex gap-2 w-full md:w-auto mt-2 md:mt-0">
+                    <button type="submit" class="px-6 py-2 rounded-xl bg-purple-600 text-white hover:bg-purple-700 transition shadow">Filtrele</button>
+                    <a href="@Url.Action("Index", "Transaction")" class="px-6 py-2 rounded-xl bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition shadow">Temizle</a>
+                </div>
+            </form>
+            <div class="bg-white/90 dark:bg-gray-900/90 rounded-2xl shadow-xl p-6 animate-fade-in-up overflow-x-auto w-full max-w-none">
+                <table class="min-w-full text-sm text-gray-800 dark:text-gray-100">
+                    <thead class="bg-gray-100 dark:bg-gray-800">
+                        <tr>
+                            <th class="px-4 py-2">Tarih</th>
+                            <th class="px-4 py-2">İşlem Türü</th>
+                            <th class="px-4 py-2">Kategori</th>
+                            <th class="px-4 py-2">Miktar</th>
+                            <th class="px-4 py-2">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionTableBody">
+                        @foreach (var transaction in Model)
+                        {
+                            <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+                                <td class="px-4 py-2">@transaction.TransactionDate.ToShortDateString()</td>
+                                <td class="px-4 py-2">
+                                    @if (transaction.Type.ToString() == "Income")
+                                    {
+                                        <span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-semibold">Gelir</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-semibold">Gider</span>
+                                    }
+                                </td>
+                                <td class="px-4 py-2">
+                                    @if (transaction.Type.ToString() == "Income")
+                                    {
+                                        @(transaction.IncomeCategory.HasValue? CommonHelper.ToHumanReadable(transaction.IncomeCategory.ToString()) : "-")
+                                    }
+                                    else
+                                    {
+                                        @(transaction.ExpenseCategory.HasValue? CommonHelper.ToHumanReadable(transaction.ExpenseCategory.ToString()) : "-")
+                                    }
+                                </td>
+                                <td class="px-4 py-2">@transaction.Amount ₺</td>
+                                <td class="px-4 py-2">@transaction.Description</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <!-- Pagination Bar -->
+                @if ((int)ViewBag.TotalPages > 1)
+                {
+                    var currentPage = (int)ViewBag.CurrentPage;
+                    var totalPages = (int)ViewBag.TotalPages;
+                    var pageSize = (int)ViewBag.PageSize;
+                    var queryParams = new Dictionary<string, object> {
+                                { "categoryFilter", ViewBag.CurrentCategory },
+                                { "searchTerm", ViewBag.CurrentSearch },
+                                { "sortOrder", ViewBag.CurrentSort },
+                                { "startDate", ViewBag.StartDate },
+                                { "endDate", ViewBag.EndDate },
+                                { "pageSize", pageSize }
+                                };
+                    <nav class="flex justify-center mt-8 animate-fade-in-up" aria-label="Sayfalama">
+                        <ul class="inline-flex items-center gap-1 rounded-xl bg-gray-100 dark:bg-gray-800 px-2 py-1 shadow">
+                            <li>
+                                <a href="@Url.Action("Index", queryParams.Concat(new[] { new KeyValuePair<string, object>("page", Math.Max(1, currentPage - 1)) }).ToDictionary(x => x.Key, x => x.Value))"
+                                   class="px-3 py-2 rounded-lg transition font-semibold flex items-center gap-1 @(currentPage == 1 ? "pointer-events-none opacity-40" : "hover:bg-purple-100 dark:hover:bg-purple-900 text-purple-700 dark:text-purple-300")">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+                                    <span class="hidden md:inline">Geri</span>
+                                </a>
+                            </li>
+                            @for (int i = Math.Max(1, currentPage - 2); i <= Math.Min(totalPages, currentPage + 2); i++)
+                            {
+                                <li>
+                                    <a href="@Url.Action("Index", queryParams.Concat(new[] { new KeyValuePair<string, object>("page", i) }).ToDictionary(x => x.Key, x => x.Value))"
+                                       class="px-4 py-2 rounded-lg font-bold transition flex items-center justify-center @(i == currentPage ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow scale-105" : "hover:bg-purple-100 dark:hover:bg-purple-900 text-purple-700 dark:text-purple-300")">
+                                        @i
+                                    </a>
+                                </li>
+                            }
+                            <li>
+                                <a href="@Url.Action("Index", queryParams.Concat(new[] { new KeyValuePair<string, object>("page", Math.Min(totalPages, currentPage + 1)) }).ToDictionary(x => x.Key, x => x.Value))"
+                                   class="px-3 py-2 rounded-lg transition font-semibold flex items-center gap-1 @(currentPage == totalPages ? "pointer-events-none opacity-40" : "hover:bg-purple-100 dark:hover:bg-purple-900 text-purple-700 dark:text-purple-300")">
+                                    <span class="hidden md:inline">İleri</span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                }
+            </div>
+        </div>
+        <!-- Sağ: Kategori Özeti ve Dağılımı kutusu -->
+        <div class="w-full md:w-80 flex flex-col gap-8 md:sticky md:top-28 mt-8 md:mt-0">
+            <div class="bg-white/90 dark:bg-gray-900/90 rounded-2xl shadow-xl p-6 animate-fade-in-up">
+                <div class="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-200 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm0 0V4m0 8v8m8-8a8 8 0 11-16 0 8 8 0 0116 0z" /></svg>
+                    Kategori Özeti
+                </div>
+                <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+                    @foreach (var item in Newtonsoft.Json.JsonConvert.DeserializeObject<List<dynamic>>(ViewBag.CategoryChart))
+                    {
+                        <li class="flex justify-between items-center py-2">
+                            <span>
+                                @(item.Category == "Income" ? "Gelir" : item.Category == "Expense" ? "Gider" : CommonHelper.ToHumanReadable((string)item.Category))
+                            </span>
+                            <span class="px-3 py-1 rounded-xl bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-200 font-semibold">@string.Format("{0:C}", item.Total)</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="bg-white/90 dark:bg-gray-900/90 rounded-2xl shadow-xl p-6 animate-fade-in-up">
+                <div class="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-200 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-pink-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm0 0V4m0 8v8m8-8a8 8 0 11-16 0 8 8 0 0116 0z" /></svg>
+                    Kategori Dağılımı
+                </div>
+                <canvas id="categoryChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const categoryChartData = @Html.Raw(ViewBag.CategoryChart);
+        const categoryMap = {
+            "Income": "Gelir",
+            "Expense": "Gider"
+        };
+        const translatedLabels = categoryChartData.map(x => categoryMap[x.Category] || x.Category);
+        new Chart(document.getElementById('categoryChart'), {
+            type: 'pie',
+            data: {
+                labels: translatedLabels,
+                datasets: [{
+                    data: categoryChartData.map(x => x.Total),
+                    backgroundColor: ['#4e73df', '#1cc88a', '#e74a3b', '#f6c23e']
+                }]
+            }
+        });
+    </script>
+}
+
+

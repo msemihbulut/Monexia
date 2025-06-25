@@ -1,0 +1,217 @@
+﻿@{
+    ViewData["Title"] = "Raporlar";
+}
+<div class="max-w-4xl mx-auto px-2 md:px-8 py-10 animate-fade-in-up">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100">Raporlar ve Analiz</h1>
+        <div class="flex gap-4">
+            <a asp-controller="AIExport" asp-action="ExportToExcel" class="px-5 py-2 text-sm font-medium text-white bg-green-600 rounded-lg shadow-md hover:bg-green-700 transition-colors duration-200 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm2-1a1 1 0 00-1 1v1h14V5a1 1 0 00-1-1H4zM3 8v7a1 1 0 001 1h12a1 1 0 001-1V8H3zm4 4a1 1 0 100-2 1 1 0 000 2z" />
+                </svg>
+                Excel Olarak İndir
+            </a>
+            <a asp-controller="AIExport" asp-action="ExportToPdf" class="px-5 py-2 text-sm font-medium text-white bg-red-600 rounded-lg shadow-md hover:bg-red-700 transition-colors duration-200 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 11-2 0V4a1 1 0 00-1-1H7a1 1 0 00-1 1v12a1 1 0 11-2 0V4z" clip-rule="evenodd" />
+                    <path d="M8.5 11.5a.5.5 0 01.5-.5h2a.5.5 0 010 1h-2a.5.5 0 01-.5-.5zM8 14a.5.5 0 000 1h4a.5.5 0 000-1H8z" />
+                    <path fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2H4zm1 2a1 1 0 011-1h10a1 1 0 011 1v10a1 1 0 01-1 1H6a1 1 0 01-1-1V4z" clip-rule="evenodd" />
+                </svg>
+                PDF Olarak İndir
+            </a>
+        </div>
+    </div>
+    @if (!string.IsNullOrEmpty(ViewBag.ExecutiveSummary))
+    {
+        <div class="bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 dark:from-blue-900/50 dark:via-purple-900/50 dark:to-pink-900/50 p-6 rounded-2xl shadow-lg mb-8 border border-gray-200 dark:border-gray-700 animate-fade-in-up">
+            <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-3 flex items-center gap-2">
+                <span class="text-2xl">💡</span>
+                Rapor Özeti
+            </h3>
+            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+                @ViewBag.ExecutiveSummary
+            </p>
+        </div>
+    }
+    <div class="bg-white/90 dark:bg-gray-900/90 rounded-2xl shadow-2xl p-8 animate-fade-in-up mb-8">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+            <div class="text-lg font-semibold text-gray-700 dark:text-gray-200 flex items-center gap-2">
+                <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18" /></svg>
+                Gelir-Gider Grafiği
+            </div>
+            <div class="flex gap-2">
+                <button class="period-btn px-4 py-1.5 rounded-lg font-semibold text-sm transition border border-blue-400 text-blue-600 bg-blue-50 hover:bg-blue-100 dark:bg-gray-800 dark:text-blue-300 dark:border-blue-300" data-period="weekly">Haftalık</button>
+                <button class="period-btn px-4 py-1.5 rounded-lg font-semibold text-sm transition border border-green-400 text-green-600 bg-green-50 hover:bg-green-100 dark:bg-gray-800 dark:text-green-300 dark:border-green-300" data-period="monthly">Aylık</button>
+                <button class="period-btn px-4 py-1.5 rounded-lg font-semibold text-sm transition border border-purple-400 text-purple-600 bg-purple-50 hover:bg-purple-100 dark:bg-gray-800 dark:text-purple-300 dark:border-purple-300" data-period="yearly">Yıllık</button>
+            </div>
+        </div>
+        <canvas id="reportChart" height="100"></canvas>
+    </div>
+    <div class="grid md:grid-cols-2 gap-8">
+        <div class="bg-white/90 dark:bg-gray-900/90 rounded-2xl shadow-2xl p-8 animate-fade-in-up">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="text-lg font-semibold text-gray-700 dark:text-gray-200">Kategori Bazlı Harcama (Pasta Grafik)</span>
+                <select id="categoryPeriod" class="ml-auto px-2 py-1 rounded border border-gray-300 dark:bg-gray-800 dark:text-gray-200">
+                    <option value="monthly">Aylık</option>
+                    <option value="weekly">Haftalık</option>
+                    <option value="yearly">Yıllık</option>
+                </select>
+            </div>
+            <canvas id="categoryPieChart" height="120"></canvas>
+        </div>
+        <div class="bg-white/90 dark:bg-gray-900/90 rounded-2xl shadow-2xl p-8 animate-fade-in-up">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="text-lg font-semibold text-gray-700 dark:text-gray-200">Kategori Bazlı Harcama (Çubuk Grafik)</span>
+                <select id="categoryBarPeriod" class="ml-auto px-2 py-1 rounded border border-gray-300 dark:bg-gray-800 dark:text-gray-200">
+                    <option value="monthly">Aylık</option>
+                    <option value="weekly">Haftalık</option>
+                    <option value="yearly">Yıllık</option>
+                </select>
+            </div>
+            <canvas id="categoryBarChart" height="120"></canvas>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // --- GELİR-GİDER GRAFİĞİ ---
+        let reportChart;
+        function loadReportChart(period = 'monthly') {
+            fetch(`/Report/GetSummaryData?period=${period}`)
+                .then(r => r.json())
+                .then(data => {
+                    const labels = [...new Set(data.map(x => x.period))];
+                    const income = labels.map(l => data.find(x => x.period === l && x.category === "Income")?.total || 0);
+                    const expense = labels.map(l => data.find(x => x.period === l && x.category === "Expense")?.total || 0);
+                    const ctx = document.getElementById('reportChart').getContext('2d');
+                    if (reportChart) reportChart.destroy();
+                    reportChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: 'Gelir',
+                                    data: income,
+                                    backgroundColor: 'rgba(34,197,94,0.8)',
+                                    borderRadius: 8,
+                                    barPercentage: 0.6
+                                },
+                                {
+                                    label: 'Gider',
+                                    data: expense,
+                                    backgroundColor: 'rgba(239,68,68,0.8)',
+                                    borderRadius: 8,
+                                    barPercentage: 0.6
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: { position: 'top' },
+                                title: { display: false },
+                                tooltip: { mode: 'index', intersect: false }
+                            },
+                            animation: { duration: 1200, easing: 'easeOutBounce' },
+                            scales: {
+                                y: { beginAtZero: true, ticks: { callback: v => v + ' ₺' } }
+                            }
+                        }
+                    });
+                });
+        }
+        document.querySelectorAll('.period-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('ring', 'ring-offset-2'));
+                this.classList.add('ring', 'ring-offset-2');
+                loadReportChart(this.dataset.period);
+            });
+        });
+        // Varsayılan: Aylık
+        document.querySelector('.period-btn[data-period="monthly"]').classList.add('ring', 'ring-offset-2');
+        loadReportChart('monthly');
+
+        // --- KATEGORİ PASTA GRAFİĞİ ---
+        let pieChart;
+        function loadCategoryPieChart(period = 'monthly') {
+            fetch(`/Report/GetCategoryData?type=expense&period=${period}`)
+                .then(r => r.json())
+                .then(data => {
+                    const labels = data.map(x => x.category);
+                    const values = data.map(x => x.total);
+                    const colors = labels.map((_, i) => `hsl(${i * 40}, 70%, 60%)`);
+                    const ctx = document.getElementById('categoryPieChart').getContext('2d');
+                    if (pieChart) pieChart.destroy();
+                    pieChart = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                data: values,
+                                backgroundColor: colors,
+                                borderWidth: 2,
+                                borderColor: '#fff',
+                                hoverOffset: 16
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: { position: 'bottom' },
+                                tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.parsed} ₺` } }
+                            },
+                            animation: { animateScale: true, duration: 1200 }
+                        }
+                    });
+                });
+        }
+        document.getElementById('categoryPeriod').addEventListener('change', function () {
+            loadCategoryPieChart(this.value);
+        });
+        loadCategoryPieChart('monthly');
+
+        // --- KATEGORİ ÇUBUK GRAFİĞİ ---
+        let barChart;
+        function loadCategoryBarChart(period = 'monthly') {
+            fetch(`/Report/GetCategoryData?type=expense&period=${period}`)
+                .then(r => r.json())
+                .then(data => {
+                    const labels = data.map(x => x.category);
+                    const values = data.map(x => x.total);
+                    const colors = labels.map((_, i) => `hsl(${i * 40}, 70%, 60%)`);
+                    const ctx = document.getElementById('categoryBarChart').getContext('2d');
+                    if (barChart) barChart.destroy();
+                    barChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Tutar',
+                                data: values,
+                                backgroundColor: colors,
+                                borderRadius: 8,
+                                barPercentage: 0.7
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: { callbacks: { label: ctx => `${ctx.parsed.y} ₺` } }
+                            },
+                            animation: { duration: 1200, easing: 'easeOutQuart' },
+                            scales: {
+                                y: { beginAtZero: true, ticks: { callback: v => v + ' ₺' } }
+                            }
+                        }
+                    });
+                });
+        }
+        document.getElementById('categoryBarPeriod').addEventListener('change', function () {
+            loadCategoryBarChart(this.value);
+        });
+        loadCategoryBarChart('monthly');
+    </script>
+}

@@ -1,0 +1,81 @@
+﻿@model List<Monexia.Models.CryptoViewModel>
+
+@{
+    ViewData["Title"] = "Kripto Paralar";
+    var updatedTime = (DateTime?)ViewBag.LastUpdated;
+}
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fade-in-up">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100">Kripto Paralar</h1>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Popüler kripto paraların anlık değerleri.</p>
+        </div>
+        @if (updatedTime.HasValue)
+        {
+            <div class="text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-lg">
+                <span>Son Güncelleme: @updatedTime.Value.ToString("dd MMM yyyy, HH:mm")</span>
+            </div>
+        }
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- TRY Table -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                <h3 class="font-semibold text-gray-700 dark:text-gray-200">TRY Bazlı Fiyatlar</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm text-gray-800 dark:text-gray-100">
+                    <thead class="bg-gray-50 dark:bg-gray-700/50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Kripto</th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Fiyat</th>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Detay</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                        @foreach (var item in Model)
+                        {
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
+                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-yellow-600 dark:text-yellow-400">@item.Name</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right font-mono">@item.PriceTry.ToString("N2") ₺</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <a class="px-3 py-1 rounded-lg bg-yellow-500 text-white hover:bg-yellow-600 transition shadow text-xs" asp-controller="Crypto" asp-action="Detail" asp-route-symbol="@item.Name" asp-route-currency="try">Detay</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- USD Table -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                <h3 class="font-semibold text-gray-700 dark:text-gray-200">USD Bazlı Fiyatlar</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm text-gray-800 dark:text-gray-100">
+                    <thead class="bg-gray-50 dark:bg-gray-700/50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Kripto</th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Fiyat</th>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Detay</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                        @foreach (var item in Model)
+                        {
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
+                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-pink-600 dark:text-pink-400">@item.Name</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right font-mono">@item.PriceUsd.ToString("N2") $</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <a class="px-3 py-1 rounded-lg bg-pink-500 text-white hover:bg-pink-600 transition shadow text-xs" asp-controller="Crypto" asp-action="Detail" asp-route-symbol="@item.Name" asp-route-currency="usd">Detay</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

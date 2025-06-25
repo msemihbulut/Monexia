@@ -1,0 +1,38 @@
+﻿<div class="flex items-center gap-2 select-none">
+    <span class="text-lg">☀️</span>
+    <button id="themeToggleSwitch"
+            type="button"
+            class="relative w-12 h-7 flex items-center rounded-full border-2 border-gray-300 dark:border-gray-600 transition-colors bg-gradient-to-r from-yellow-300 to-yellow-500 dark:from-indigo-700 dark:to-purple-600 focus:outline-none"
+            title="Tema Değiştir"
+            aria-label="Tema Değiştir">
+        <span id="themeToggleThumb" class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-transform duration-300"></span>
+    </button>
+    <span class="text-lg">🌙</span>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const html = document.documentElement;
+        const thumb = document.getElementById('themeToggleThumb');
+        const switchBtn = document.getElementById('themeToggleSwitch');
+
+        function updateThumbPosition() {
+            const isDark = html.classList.contains('dark');
+            thumb.classList.toggle('translate-x-5', isDark);
+            thumb.classList.toggle('translate-x-0', !isDark);
+        }
+
+        switchBtn?.addEventListener('click', () => {
+            const isDark = html.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateThumbPosition();
+        });
+
+        // Sayfa yüklendiğinde localStorage'a göre uygula
+        if (localStorage.getItem('theme') === 'dark') {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
+        updateThumbPosition();
+    });
+</script>

@@ -1,0 +1,33 @@
+﻿@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "E-posta Onayı";
+}
+
+<div class="max-w-lg mx-auto my-16 animate-fade-in-up">
+    <div class="bg-white/90 dark:bg-gray-900/90 rounded-2xl shadow-2xl p-8 flex flex-col items-center">
+        <div class="mb-6 flex flex-col items-center">
+            <div class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-full p-3 mb-3 shadow-lg">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.88 7.88a4 4 0 11-5.76 5.76M15 11a3 3 0 11-4 0 3 3 0 014 0z" /></svg>
+            </div>
+            <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500 dark:from-purple-300 dark:to-pink-300 mb-2">@ViewData["Title"]</h1>
+            <div class="h-1 w-16 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full mb-2"></div>
+        </div>
+        <div class="w-full">
+            @if (!string.IsNullOrEmpty(Model.StatusMessage))
+            {
+                <div class="flex items-center gap-3 px-5 py-4 rounded-xl border-l-4 bg-gradient-to-r from-green-50 via-white to-green-100/80 border-green-400 text-green-900 dark:from-green-900 dark:via-gray-900 dark:to-green-800 dark:border-green-500 dark:text-green-100 mb-4 animate-fade-in-up">
+                    <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    <span class="flex-1">@Model.StatusMessage</span>
+                </div>
+            }
+            else
+            {
+                <div class="flex items-center gap-3 px-5 py-4 rounded-xl border-l-4 bg-gradient-to-r from-blue-50 via-white to-blue-100/80 border-blue-400 text-blue-900 dark:from-blue-900 dark:via-gray-900 dark:to-blue-800 dark:border-blue-500 dark:text-blue-100 animate-fade-in-up">
+                    <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01" /></svg>
+                    <span class="flex-1">E-posta adresiniz başarıyla onaylandı.</span>
+                </div>
+            }
+        </div>
+    </div>
+</div>

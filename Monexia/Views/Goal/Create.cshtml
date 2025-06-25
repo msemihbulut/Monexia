@@ -1,0 +1,54 @@
+﻿@model Monexia.Models.Goal
+@{
+    ViewData["Title"] = "Yeni Hedef Ekle";
+}
+<div class="max-w-xl mx-auto py-10 animate-fade-in-up">
+    <div class="bg-white/90 dark:bg-gray-900/90 rounded-2xl shadow-2xl p-8">
+        <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-500 to-indigo-400 dark:from-purple-300 dark:via-pink-300 dark:to-indigo-200 mb-8">Yeni Hedef Ekle</h2>
+        <form asp-action="Create" method="post" class="flex flex-col gap-6">
+            @if (!ViewData.ModelState.IsValid && Context.Request.Method == "POST")
+            {
+                <div asp-validation-summary="All" class="bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-xl px-4 py-3 mb-2 animate-fade-in-up"></div>
+            }
+            <div>
+                <label asp-for="Name" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Hedef Adı</label>
+                <input asp-for="Name" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500" required />
+                <span asp-validation-for="Name" class="text-xs text-red-500"></span>
+            </div>
+            <div>
+                <label asp-for="Description" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Açıklama</label>
+                <textarea asp-for="Description" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"></textarea>
+                <span asp-validation-for="Description" class="text-xs text-red-500"></span>
+            </div>
+            <div>
+                <label asp-for="Category" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Kategori</label>
+                <input asp-for="Category" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Hedef kategorisi (ör. Tatil, Araba, Eğitim, vb.)" required />
+                <span asp-validation-for="Category" class="text-xs text-red-500"></span>
+            </div>
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex-1">
+                    <label asp-for="TargetAmount" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Hedef Tutarı (₺)</label>
+                    <input asp-for="TargetAmount" type="number" min="1" step="0.01" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500" required />
+                    <span asp-validation-for="TargetAmount" class="text-xs text-red-500"></span>
+                </div>
+                <div class="flex-1">
+                    <label asp-for="StartDate" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Başlangıç Tarihi</label>
+                    <input asp-for="StartDate" type="date" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500" required />
+                    <span asp-validation-for="StartDate" class="text-xs text-red-500"></span>
+                </div>
+                <div class="flex-1">
+                    <label asp-for="EndDate" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Bitiş Tarihi</label>
+                    <input asp-for="EndDate" type="date" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500" required />
+                    <span asp-validation-for="EndDate" class="text-xs text-red-500"></span>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row gap-4 justify-end mt-4">
+                <button type="submit" class="px-6 py-2 rounded-xl bg-purple-600 text-white hover:bg-purple-700 transition shadow">Kaydet</button>
+                <a asp-action="Index" class="px-6 py-2 rounded-xl bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition shadow">Geri</a>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

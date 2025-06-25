@@ -1,0 +1,162 @@
+﻿@using Monexia.Models
+@using Monexia.Helpers
+@model Monexia.Models.Transaction
+
+@{
+    ViewData["Title"] = "Yeni İşlem Ekle";
+    var incomeCategories = ViewBag.IncomeCategories as List<SelectListItem>;
+    var expenseCategories = ViewBag.ExpenseCategories as List<SelectListItem>;
+}
+
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-10 animate-fade-in">
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-white dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-2xl p-8">
+            <h2 class="text-3xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-500 to-indigo-400 dark:from-purple-300 dark:via-pink-300 dark:to-indigo-200 mb-6">
+                Yeni İşlem Ekle
+            </h2>
+
+            <div class="bg-blue-50 dark:bg-blue-900/50 border-l-4 border-blue-400 text-blue-800 dark:text-blue-200 p-4 rounded-lg mb-8 text-sm">
+                <p><strong>İpucu:</strong> Açıklamanızı girin, işlem türü ve kategori sizin için otomatik olarak seçilsin!</p>
+            </div>
+
+            <form asp-controller="Transaction" asp-action="Create" method="post" class="flex flex-col gap-6">
+                @Html.AntiForgeryToken()
+
+                @if (!ViewData.ModelState.IsValid && Context.Request.Method == "POST")
+                {
+                    <div asp-validation-summary="All" class="bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-xl px-4 py-3 mb-2 animate-fade-in-up"></div>
+                }
+
+                <div>
+                    <label asp-for="Description" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Açıklama</label>
+                    <textarea asp-for="Description" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-4 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 transition" placeholder="Örn: Netflix faturası, Maaş yattı..." rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-xs text-red-500"></span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label asp-for="Type" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">İşlem Türü</label>
+                        <select asp-for="Type" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-4 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500" id="categorySelect">
+                            <option value="Expense">Gider</option>
+                            <option value="Income">Gelir</option>
+                        </select>
+                        <span asp-validation-for="Type" class="text-xs text-red-500"></span>
+                    </div>
+
+                    <div id="expenseDiv" style="display:none;">
+                        <label asp-for="ExpenseCategory" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Gider Kategorisi</label>
+                        <select asp-for="ExpenseCategory" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-4 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500" id="expenseSelect">
+                            @foreach (var item in expenseCategories)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+                        <span asp-validation-for="ExpenseCategory" class="text-xs text-red-500"></span>
+                    </div>
+
+                    <div id="incomeDiv" style="display:none;">
+                        <label asp-for="IncomeCategory" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Gelir Kategorisi</label>
+                        <select asp-for="IncomeCategory" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-4 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500" id="incomeSelect">
+                            @foreach (var item in incomeCategories)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+                        <span asp-validation-for="IncomeCategory" class="text-xs text-red-500"></span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label asp-for="Amount" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Miktar</label>
+                        <input asp-for="Amount" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-4 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                        <span asp-validation-for="Amount" class="text-xs text-red-500"></span>
+                    </div>
+                    <div>
+                        <label asp-for="TransactionDate" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">Tarih</label>
+                        <input asp-for="TransactionDate" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-4 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500" type="date" />
+                        <span asp-validation-for="TransactionDate" class="text-xs text-red-500"></span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-4 justify-end mt-4">
+                    <a asp-controller="Transaction" asp-action="Index" class="px-6 py-2 rounded-xl bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition shadow text-center">İptal</a>
+                    <button type="submit" class="px-6 py-2 rounded-xl bg-purple-600 text-white hover:bg-purple-700 transition shadow">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const categorySelect = document.getElementById("categorySelect");
+            const incomeDiv = document.getElementById("incomeDiv");
+            const expenseDiv = document.getElementById("expenseDiv");
+            const descriptionInput = document.querySelector("textarea[name='Description']");
+            const incomeSelect = document.getElementById("incomeSelect");
+            const expenseSelect = document.getElementById("expenseSelect");
+            const form = document.querySelector('form');
+
+            function toggleCategoryFields() {
+                const selected = categorySelect.value;
+                incomeDiv.style.display = (selected === "Income") ? "block" : "none";
+                expenseDiv.style.display = (selected === "Expense") ? "block" : "none";
+            }
+
+            categorySelect.addEventListener("change", toggleCategoryFields);
+            toggleCategoryFields();
+
+            let debounceTimeout;
+            descriptionInput.addEventListener('input', () => {
+                clearTimeout(debounceTimeout);
+                debounceTimeout = setTimeout(async () => {
+                    const description = descriptionInput.value;
+                    if (description.length < 5) return;
+
+                    descriptionInput.classList.add('opacity-50');
+
+                    try {
+                        const token = form.querySelector('input[name="__RequestVerificationToken"]').value;
+                        const response = await fetch('/Transaction/SuggestCategory', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'RequestVerificationToken': token
+                            },
+                            body: JSON.stringify({ description: description })
+                        });
+
+                        if (!response.ok) {
+                             console.error("Server responded with an error:", response.status);
+                             return;
+                        }
+
+                        const data = await response.json();
+                        const suggestedCategory = data.category;
+
+                        const incomeOption = Array.from(incomeSelect.options).find(opt => opt.text === suggestedCategory);
+                        const expenseOption = Array.from(expenseSelect.options).find(opt => opt.text === suggestedCategory);
+
+                        if (incomeOption) {
+                            categorySelect.value = "Income";
+                            incomeSelect.value = incomeOption.value;
+                        } else if (expenseOption) {
+                            categorySelect.value = "Expense";
+                            expenseSelect.value = expenseOption.value;
+                        }
+
+                        toggleCategoryFields();
+
+                    } catch (error) {
+                        console.error("Kategori önerisi alınırken hata oluştu:", error);
+                    } finally {
+                        descriptionInput.classList.remove('opacity-50');
+                    }
+                }, 1000);
+            });
+        });
+    </script>
+}

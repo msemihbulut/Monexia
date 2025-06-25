@@ -1,0 +1,101 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 animate-fade-in">
+    <div class="mx-auto w-full max-w-md">
+        <img class="mx-auto h-12 w-auto" src="~/img/monexia-logo.png" alt="Monexia">
+        <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white">Yeni bir hesap oluşturun</h2>
+        <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+            Zaten bir hesabınız var mı?
+            <a href="/Identity/Account/Login" class="font-semibold text-indigo-600 hover:text-indigo-500">Giriş yapın</a>
+        </p>
+    </div>
+
+    <div class="mt-10 mx-auto w-full max-w-md">
+        <div class="bg-white dark:bg-gray-800 px-6 py-8 shadow-xl rounded-2xl">
+            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="space-y-6">
+                <div asp-validation-summary="ModelOnly" class="bg-red-100 dark:bg-red-900/50 border border-red-300 dark:border-red-600 text-red-700 dark:text-red-200 rounded-xl px-4 py-3 text-sm" role="alert"></div>
+
+                <div class="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
+                    <div class="sm:col-span-3">
+                        <label asp-for="Input.Name" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">Ad</label>
+                        <div class="mt-2">
+                            <input asp-for="Input.Name" placeholder="Adınız" class="block w-full rounded-md border-0 py-2 px-3 text-gray-900 dark:text-gray-200 bg-white dark:bg-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        </div>
+                        <span asp-validation-for="Input.Name" class="text-xs text-red-500"></span>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label asp-for="Input.Surname" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">Soyad</label>
+                        <div class="mt-2">
+                            <input asp-for="Input.Surname" placeholder="Soyadınız" class="block w-full rounded-md border-0 py-2 px-3 text-gray-900 dark:text-gray-200 bg-white dark:bg-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        </div>
+                        <span asp-validation-for="Input.Surname" class="text-xs text-red-500"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label asp-for="Input.Email" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">E-posta adresi</label>
+                    <div class="mt-2">
+                        <input asp-for="Input.Email" placeholder="name@example.com" required class="block w-full rounded-md border-0 py-2 px-3 text-gray-900 dark:text-gray-200 bg-white dark:bg-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    </div>
+                    <span asp-validation-for="Input.Email" class="text-xs text-red-500"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Input.Password" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">Şifre</label>
+                    <div class="mt-2">
+                        <input asp-for="Input.Password" type="password" placeholder="Şifreniz" required class="block w-full rounded-md border-0 py-2 px-3 text-gray-900 dark:text-gray-200 bg-white dark:bg-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    </div>
+                    <span asp-validation-for="Input.Password" class="text-xs text-red-500"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Input.ConfirmPassword" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">Şifre Tekrar</label>
+                    <div class="mt-2">
+                        <input asp-for="Input.ConfirmPassword" type="password" placeholder="Şifrenizi tekrar girin" required class="block w-full rounded-md border-0 py-2 px-3 text-gray-900 dark:text-gray-200 bg-white dark:bg-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    </div>
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-xs text-red-500"></span>
+                </div>
+
+                <div>
+                    <button id="registerSubmit" type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition">Hesap Oluştur</button>
+                </div>
+            </form>
+
+            @if ((Model.ExternalLogins?.Count ?? 0) > 0)
+            {
+                <div>
+                    <div class="relative mt-10">
+                        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                            <div class="w-full border-t border-gray-200 dark:border-gray-600"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm font-medium leading-6">
+                            <span class="bg-white dark:bg-gray-800 px-6 text-gray-900 dark:text-gray-200">Veya devam et</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-1 gap-4">
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                            @foreach (var provider in Model.ExternalLogins)
+                            {
+                                <button type="submit" name="provider" value="@provider.Name" title="@provider.DisplayName ile giriş yap"
+                                        class="flex w-full items-center justify-center gap-3 rounded-md bg-white dark:bg-gray-700 px-3 py-2 text-sm font-semibold text-gray-900 dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 focus-visible:ring-indigo-600">
+                                    <i class="fa-brands fa-@provider.Name.ToLower() h-5 w-5"></i>
+                                    <span class="text-sm font-semibold leading-6">@provider.DisplayName</span>
+                                </button>
+                            }
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

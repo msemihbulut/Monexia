@@ -1,0 +1,78 @@
+﻿@model Monexia.Models.UserDetailsViewModel
+@{
+    ViewData["Title"] = $"Kullanıcı Detayları: {Model.User.Name} {Model.User.Surname}";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 p-4 sm:p-6 lg:p-8">
+    <div class="max-w-7xl mx-auto">
+
+        <!-- Header -->
+        <div class="mb-8">
+            <a asp-action="Dashboard" class="text-sm text-indigo-600 dark:text-indigo-400 hover:underline mb-2 inline-block">&larr; Admin Paneline Dön</a>
+            <div class="flex items-center gap-4">
+                <img class="h-16 w-16 rounded-full object-cover shadow-lg" src="@(Model.User.ProfilePictureUrl ?? "/img/profile/default.png")" alt="Profil Resmi">
+                <div>
+                    <h1 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-indigo-600">@Model.User.Name @Model.User.Surname</h1>
+                    <p class="text-gray-500 dark:text-gray-400">@Model.User.Email</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stat Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Toplam Gelir</p>
+                <p class="text-2xl font-bold text-green-600">@Model.TotalIncome.ToString("C")</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Toplam Gider</p>
+                <p class="text-2xl font-bold text-red-600">@Model.TotalExpense.ToString("C")</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Net Bakiye</p>
+                <p class="text-2xl font-bold">@Model.NetBalance.ToString("C")</p>
+            </div>
+        </div>
+
+        <!-- Transactions Table -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+            <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                <h2 class="text-xl font-bold">Kullanıcı İşlemleri (@Model.Transactions.Count)</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead class="bg-gray-50 dark:bg-gray-700/50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Tarih</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Açıklama</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Kategori</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Tutar</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                        @foreach (var t in Model.Transactions)
+                        {
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">@t.TransactionDate.ToString("dd.MM.yyyy")</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">@t.Description</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    @(t.Type == Monexia.Models.TransactionType.Income ? t.IncomeCategory.ToString() : t.ExpenseCategory.ToString())
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold @(t.Type == Monexia.Models.TransactionType.Income ? "text-green-600" : "text-red-600")">
+                                    @( (t.Type == Monexia.Models.TransactionType.Income ? "+" : "-") + t.Amount.ToString("C"))
+                                </td>
+                            </tr>
+                        }
+                        @if (!Model.Transactions.Any())
+                        {
+                            <tr>
+                                <td colspan="4" class="px-6 py-4 text-center text-gray-500">Bu kullanıcıya ait işlem bulunamadı.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div> 

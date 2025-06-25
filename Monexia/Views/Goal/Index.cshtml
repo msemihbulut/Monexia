@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Monexia.Models.Goal>
+@{
+    ViewData["Title"] = "Hedeflerim";
+    var totalGoals = Model.Count();
+    var completedGoals = Model.Count(g => g.Status == "Bitmiş");
+    var totalTarget = Model.Sum(g => g.TargetAmount);
+    var totalCurrent = Model.Sum(g => g.CurrentAmount);
+}
+<div class="max-w-4xl mx-auto px-2 md:px-8 py-10 animate-fade-in-up">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div class="flex flex-col items-center justify-center bg-gradient-to-r from-green-400 via-blue-400 to-purple-400 dark:from-green-800 dark:via-blue-800 dark:to-purple-800 text-white rounded-2xl shadow-lg p-6">
+            <svg class="w-8 h-8 mb-2 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm0 10c-4.418 0-8-1.79-8-4V6a2 2 0 012-2h12a2 2 0 012 2v8c0 2.21-3.582 4-8 4z" /></svg>
+            <div class="text-lg font-bold text-white dark:text-blue-200">Toplam Hedef</div>
+            <div class="text-2xl font-extrabold text-white dark:text-blue-100">@totalGoals</div>
+        </div>
+        <div class="flex flex-col items-center justify-center bg-gradient-to-r from-green-200 via-blue-200 to-purple-200 dark:from-green-700 dark:via-blue-700 dark:to-purple-700 text-gray-800 dark:text-purple-100 rounded-2xl shadow-lg p-6">
+            <svg class="w-8 h-8 mb-2 text-purple-200 dark:text-purple-100" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            <div class="text-lg font-bold dark:text-purple-100">Tamamlanan</div>
+            <div class="text-2xl font-extrabold dark:text-purple-50">@completedGoals</div>
+        </div>
+        <div class="flex flex-col items-center justify-center bg-gradient-to-r from-yellow-200 via-pink-200 to-purple-200 dark:from-yellow-700 dark:via-pink-700 dark:to-purple-700 text-gray-800 dark:text-yellow-100 rounded-2xl shadow-lg p-6">
+            <svg class="w-8 h-8 mb-2 text-yellow-400 dark:text-yellow-100" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm0 10c-4.418 0-8-1.79-8-4V6a2 2 0 012-2h12a2 2 0 012 2v8c0 2.21-3.582 4-8 4z" /></svg>
+            <div class="text-lg font-bold dark:text-yellow-100">Toplam Hedef Tutarı</div>
+            <div class="text-2xl font-extrabold dark:text-yellow-50">@totalTarget ₺</div>
+        </div>
+        <div class="flex flex-col items-center justify-center bg-gradient-to-r from-green-100 via-blue-100 to-purple-100 dark:from-green-900 dark:via-blue-900 dark:to-purple-900 text-gray-800 dark:text-gray-100 rounded-2xl shadow-lg p-6">
+            <svg class="w-8 h-8 mb-2 text-gray-400 dark:text-gray-100" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a5 5 0 00-10 0v2a2 2 0 00-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5a2 2 0 00-2-2z" /></svg>
+            <div class="text-lg font-bold dark:text-gray-100">Toplam Birikim</div>
+            <div class="text-2xl font-extrabold dark:text-white">@totalCurrent ₺</div>
+        </div>
+    </div>
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+        <h2 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-blue-500 to-purple-400 dark:from-green-200 dark:via-blue-300 dark:to-purple-200">Hedeflerim</h2>
+        <a class="px-5 py-2 rounded-xl bg-blue-500 text-white hover:bg-blue-600 transition shadow text-base font-semibold" asp-action="Create">+ Yeni Hedef</a>
+    </div>
+    <div class="grid md:grid-cols-2 gap-8">
+        @foreach (var goal in Model)
+        {
+            var progress = goal.TargetAmount > 0 ? (decimal)goal.CurrentAmount / goal.TargetAmount * 100 : 0;
+            <div class="bg-white/90 dark:bg-gray-900/90 rounded-2xl shadow-2xl p-6 flex flex-col gap-4 animate-fade-in-up">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-xl font-bold text-gray-800 dark:text-gray-100">@goal.Name</span>
+                    <span class="ml-auto px-3 py-1 rounded-full text-xs font-semibold @(goal.Status == "Bitmiş" ? "bg-green-200 text-green-800" : "bg-yellow-100 text-yellow-700")">@goal.Status</span>
+                </div>
+                <div class="flex flex-wrap gap-2 text-sm text-gray-600 dark:text-gray-300">
+                    <span class="px-2 py-1 rounded bg-purple-100 text-purple-700">@goal.Category</span>
+                </div>
+                <div class="flex flex-col gap-1 mt-2">
+                    <div class="flex justify-between text-sm">
+                        <span>Hedef: <b>@goal.TargetAmount ₺</b></span>
+                        <span>Mevcut: <b>@goal.CurrentAmount ₺</b></span>
+                        <span>Kalan: <b>@(goal.TargetAmount - goal.CurrentAmount) ₺</b></span>
+                    </div>
+                    <div class="w-full h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mt-1">
+                        <div class="h-full transition-all duration-700" style="width:@progress%; background: linear-gradient(90deg, #34d399, #60a5fa, #a78bfa);"></div>
+                    </div>
+                    <div class="flex justify-between text-xs text-gray-500 mt-1">
+                        <span>Başlangıç: @goal.StartDate.ToShortDateString()</span>
+                        <span>Bitiş: @goal.EndDate.ToShortDateString()</span>
+                    </div>
+                </div>
+                <div class="flex gap-2 mt-4">
+                    <a asp-action="AddProgress" asp-route-id="@goal.Id" class="px-4 py-1.5 rounded-lg bg-green-500 text-white hover:bg-green-600 font-semibold text-sm transition">Para Ekle</a>
+                    <a asp-action="Edit" asp-route-id="@goal.Id" class="px-4 py-1.5 rounded-lg bg-blue-500 text-white hover:bg-blue-600 font-semibold text-sm transition">Düzenle</a>
+                    <form asp-action="Delete" asp-route-id="@goal.Id" method="post" class="inline">
+                        <button type="submit" class="px-4 py-1.5 rounded-lg bg-red-500 text-white hover:bg-red-600 font-semibold text-sm transition" onclick="return confirm('Bu hedefi silmek istediğinize emin misiniz?')">Sil</button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+    @if (!Model.Any())
+    {
+        <div class="text-center text-gray-500 dark:text-gray-300 mt-16 text-lg">Henüz bir hedefiniz yok. <a asp-action="Create" class="text-blue-500 underline">Hemen ekleyin!</a></div>
+    }
+</div> 

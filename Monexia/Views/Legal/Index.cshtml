@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Yasal Bildirimler";
+    var lastUpdated = "15 Mayıs 2024";
+}
+
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 animate-fade-in">
+    <div class="max-w-4xl mx-auto">
+
+        <div class="text-center mb-12">
+            <svg class="w-16 h-16 mx-auto text-purple-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white">
+                Yasal Bildirimler
+            </h1>
+            <p class="mt-4 text-lg text-gray-500 dark:text-gray-400">
+                Monexia hizmetlerini kullanımınızı yöneten şartlar ve politikalar.
+            </p>
+            <p class="mt-2 text-sm text-gray-400 dark:text-gray-500">
+                Son Güncelleme: @lastUpdated
+            </p>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800/50 rounded-2xl shadow-xl overflow-hidden">
+            <div class="p-8 md:p-12 space-y-12">
+
+                <!-- Gizlilik Politikası Section -->
+                <section>
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-600 dark:text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">Gizlilik Politikası</h2>
+                    </div>
+
+                    <div class="space-y-6 text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+                        <p>Kişisel verilerinizin nasıl toplandığını, kullanıldığını ve korunduğunu anlamanız bizim için önemlidir. Bu politika, Monexia'yı kullanırken gizliliğinizi nasıl sağladığımızı açıklamaktadır.</p>
+
+                        <div class="space-y-4 pl-4 border-l-4 border-purple-200 dark:border-purple-800">
+                            <p><b>Veri Toplama:</b> Hizmet kalitesini artırmak için anonim kullanım verileri ve kişiselleştirme için sağladığınız finansal veriler gibi temel bilgileri toplarız.</p>
+                            <p><b>Veri Kullanımı:</b> Verileriniz, size özel finansal öngörüler sunmak, uygulama özelliklerini geliştirmek ve genel kullanıcı deneyimini iyileştirmek için kullanılır.</p>
+                            <p><b>Veri Paylaşımı:</b> Açık rızanız olmadan veya yasal bir zorunluluk bulunmadıkça kişisel verileriniz asla üçüncü taraflarla paylaşılmaz.</p>
+                            <p><b>Güvenlik:</b> Verilerinizi yetkisiz erişime, değişikliğe ve silinmeye karşı korumak için sektör standardı şifreleme ve güvenlik önlemleri kullanıyoruz.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Kullanım Şartları Section -->
+                <section>
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">Kullanım Şartları</h2>
+                    </div>
+                    <div class="space-y-6 text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+                        <p>Monexia'ya erişerek ve kullanarak, aşağıda belirtilen şartlara ve koşullara uymayı kabul etmiş olursunuz. Lütfen bu şartları dikkatlice okuyun.</p>
+
+                        <div class="space-y-4 pl-4 border-l-4 border-indigo-200 dark:border-indigo-800">
+                            <p><b>Hesap Sorumluluğu:</b> Hesap bilgilerinizin (kullanıcı adı, şifre) gizliliğini korumak sizin sorumluluğunuzdadır. Hesabınız altında gerçekleşen tüm aktivitelerden siz sorumlusunuz.</p>
+                            <p><b>Yasal Kullanım:</b> Uygulamayı yalnızca yasal amaçlar için kullanmayı ve geçerli tüm yerel, ulusal ve uluslararası yasalara uymayı kabul edersiniz.</p>
+                            <p><b>Hizmet Değişiklikleri:</b> Hizmetlerimizi ve politikalarımızı zaman zaman değiştirme veya sonlandırma hakkını saklı tutarız. Önemli değişiklikler size bildirilecektir.</p>
+                            <p><b>Fikri Mülkiyet:</b> Uygulama arayüzü, logolar ve içerikler dahil olmak üzere Monexia ile ilişkili tüm materyaller bizim mülkiyetimizdedir ve izinsiz kullanılamaz.</p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+            <div class="bg-gray-50 dark:bg-gray-800/20 px-8 py-4 text-center">
+                <p class="text-sm text-gray-500 dark:text-gray-400">Bu metinler, hizmetlerimizin temel yasal çerçevesini özetlemektedir.</p>
+            </div>
+        </div>
+    </div>
+</div> 
