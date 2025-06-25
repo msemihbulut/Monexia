@@ -32,17 +32,17 @@ Monexia, kişisel finans yönetimini kolaylaştırmak, harcamalarınızı analiz
 
 ##  Proje Yapısı
 Monexia/     
-├── Controllers/ # Uygulama iş mantığı ve API uç noktaları     
-├── Models/ # Veri modelleri ve ViewModel'ler    
-├── Views/ # Razor tabanlı kullanıcı arayüzü     
-├── Services/ # Servis katmanı (AI, raporlama vb.)    
-├── Helpers/ # Yardımcı fonksiyonlar ve şifreleme    
-├── Data/ # DbContext ve veri erişim katmanı    
-├── wwwroot/ # Statik dosyalar (CSS, JS, görseller)    
-├── Migrations/ # Entity Framework veritabanı migrasyonları    
-├── Program.cs # Uygulama başlangıç noktası    
-├── appsettings.json # Konfigürasyon dosyaları    
-└── Monexia.csproj # Proje yapılandırma dosyası    
+├── Controllers/       # Uygulama iş mantığı ve API uç noktaları     
+├── Models/            # Veri modelleri ve ViewModel'ler    
+├── Views/             # Razor tabanlı kullanıcı arayüzü     
+├── Services/          # Servis katmanı (AI, raporlama vb.)    
+├── Helpers/           # Yardımcı fonksiyonlar ve şifreleme    
+├── Data/              # DbContext ve veri erişim katmanı    
+├── wwwroot/           # Statik dosyalar (CSS, JS, görseller)    
+├── Migrations/        # Entity Framework veritabanı migrasyonları    
+├── Program.cs         # Uygulama başlangıç noktası    
+├── appsettings.json   # Konfigürasyon dosyaları    
+└── Monexia.csproj     # Proje yapılandırma dosyası    
 
 
 
@@ -71,7 +71,7 @@ Monexia/
 
 ## 📄 Lisans
 
-Bu projenin lisans durumu için LICENSE kısmını kontrol edebilirsiniz.
+Bu projenin lisans durumu için [LICENSE](LICENSE) kısmını kontrol edebilirsiniz.
 
 ---
 
