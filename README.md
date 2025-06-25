@@ -49,7 +49,7 @@ Monexia/
 ---
 
 
-## 📊 Ekran Görüntüleri
+## Ekran Görüntüleri
 ![image](https://github.com/user-attachments/assets/b3cd491f-ce3f-4ce3-8bdc-4396e7ef6ea8)
 ![image](https://github.com/user-attachments/assets/e6aa2b7f-aaee-4a65-809d-d32c1e7a0b3c)
 ![image](https://github.com/user-attachments/assets/e7376e32-0bf6-4d8f-8d0f-2635845b7dfe)
@@ -69,13 +69,13 @@ Monexia/
 ---
 
 
-## 📄 Lisans
+## Lisans
 
 Bu projenin lisans durumu için [LICENSE](LICENSE) kısmını kontrol edebilirsiniz.
 
 ---
 
-## 📞 İletişim
+## İletişim
 
 Her türlü soru ve öneriniz için:  
 **E-posta:** msemihbulut@gmail.com
