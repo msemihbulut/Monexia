@@ -49,17 +49,17 @@ Monexia, kişisel finans yönetimini kolaylaştırmak, harcamalarınızı analiz
 
 ##  Proje Yapısı
 Monexia/
-├── Controllers/          &nbsp;# Uygulama iş mantığı ve API uç noktaları (Application logic and API endpoints)
-├── Models/               # Veri modelleri ve ViewModel'ler (Data models and ViewModels)
-├── Views/                # Razor tabanlı kullanıcı arayüzü (Razor-based user interface)
-├── Services/             # Servis katmanı (AI, raporlama vb.) (Service layer - AI, reporting etc.)
-├── Helpers/              # Yardımcı fonksiyonlar ve şifreleme (Helper functions and encryption)
-├── Data/                 # DbContext ve veri erişim katmanı (DbContext and data access layer)
-├── wwwroot/              # Statik dosyalar (CSS, JS, görseller) (Static files - CSS, JS, images)
-├── Migrations/           # Entity Framework veritabanı migrasyonları (Entity Framework database migrations)
-├── Program.cs            # Uygulama başlangıç noktası (Application entry point)
-├── appsettings.json      # Konfigürasyon dosyaları (Configuration files)
-└── Monexia.csproj        # Proje yapılandırma dosyası (Project configuration file)
+├── Controllers/          # Uygulama iş mantığı ve API uç noktaları (Application logic and API endpoints)     
+├── Models/               # Veri modelleri ve ViewModel'ler (Data models and ViewModels)       
+├── Views/                # Razor tabanlı kullanıcı arayüzü (Razor-based user interface)       
+├── Services/             # Servis katmanı (AI, raporlama vb.) (Service layer - AI, reporting etc.)       
+├── Helpers/              # Yardımcı fonksiyonlar ve şifreleme (Helper functions and encryption)      
+├── Data/                 # DbContext ve veri erişim katmanı (DbContext and data access layer)      
+├── wwwroot/              # Statik dosyalar (CSS, JS, görseller) (Static files - CSS, JS, images)       
+├── Migrations/           # Entity Framework veritabanı migrasyonları (Entity Framework database migrations)      
+├── Program.cs            # Uygulama başlangıç noktası (Application entry point)      
+├── appsettings.json      # Konfigürasyon dosyaları (Configuration files)      
+└── Monexia.csproj        # Proje yapılandırma dosyası (Project configuration file)     
 
 
 
