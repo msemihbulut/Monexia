@@ -1,9 +1,9 @@
 # Monexia
 
-**Yapay Zeka Destekli Finansal İşlem Takip ve Harcama Analiz Sistemi**
+**Yapay Zeka Destekli Finansal İşlem Takip ve Harcama Analiz Sistemi**     
 (**AI-Powered Financial Transaction Tracking and Spending Analysis System**)
 
-Monexia, kişisel finans yönetimini kolaylaştırmak, harcamalarınızı analiz etmek ve finansal hedeflerinize ulaşmanıza yardımcı olmak için geliştirilmiş, yapay zeka destekli modern bir web uygulamasıdır.
+Monexia, kişisel finans yönetimini kolaylaştırmak, harcamalarınızı analiz etmek ve finansal hedeflerinize ulaşmanıza yardımcı olmak için geliştirilmiş, yapay zeka destekli modern bir web uygulamasıdır.     
 (*Monexia is a modern AI-powered web application developed to simplify personal finance management, analyze your expenses, and help you achieve your financial goals.*)
 
 ---
