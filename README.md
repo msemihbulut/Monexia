@@ -1,48 +1,65 @@
 # Monexia
 
 **Yapay Zeka Destekli Finansal İşlem Takip ve Harcama Analiz Sistemi**
+(**AI-Powered Financial Transaction Tracking and Spending Analysis System**)
 
 Monexia, kişisel finans yönetimini kolaylaştırmak, harcamalarınızı analiz etmek ve finansal hedeflerinize ulaşmanıza yardımcı olmak için geliştirilmiş, yapay zeka destekli modern bir web uygulamasıdır.
+(*Monexia is a modern AI-powered web application developed to simplify personal finance management, analyze your expenses, and help you achieve your financial goals.*)
 
 ---
 
-## Özellikler
+## Özellikler (*Features*)
 
-- **Gelir-Gider Takibi:** Kategorilere göre gelir ve giderlerinizi kaydedin, geçmiş işlemlerinizi görüntüleyin.
-- **Harcama Limitleri:** Kategori bazlı harcama limitleri belirleyin, aşım durumunda uyarı alın.
-- **Finansal Hedefler:** Tasarruf ve yatırım hedefleri oluşturun, ilerlemenizi takip edin.
-- **Yapay Zeka Destekli Tavsiye:** OpenAI GPT-4 entegrasyonu ile kişiselleştirilmiş finansal öneriler alın.
-- **Raporlama ve Analiz:** Grafikler ve tablolar ile harcama analizleri, PDF/Excel raporları oluşturun.
-- **Çoklu Varlık Takibi:** Döviz, kripto para, hisse senedi ve değerli metallerin güncel fiyatlarını takip edin.
-- **Güvenlik:** AES şifreleme, güçlü parola politikası ve kimlik doğrulama.
-- **Kullanıcı Profili:** Profil düzenleme, parola değiştirme ve kişisel ayarlar.
+- **Gelir-Gider Takibi:** Kategorilere göre gelir ve giderlerinizi kaydedin, geçmiş işlemlerinizi görüntüleyin.  
+  (*Track income and expenses by category, view past transactions.*)
+
+- **Harcama Limitleri:** Kategori bazlı harcama limitleri belirleyin, aşım durumunda uyarı alın.  
+  (*Set category-based spending limits and receive alerts when exceeded.*)
+
+- **Finansal Hedefler:** Tasarruf ve yatırım hedefleri oluşturun, ilerlemenizi takip edin.  
+  (*Create savings and investment goals, and track your progress.*)
+
+- **Yapay Zeka Destekli Tavsiye:** OpenAI GPT-4 entegrasyonu ile kişiselleştirilmiş finansal öneriler alın.  
+  (*Receive personalized financial advice with OpenAI GPT-4 integration.*)
+
+- **Raporlama ve Analiz:** Grafikler ve tablolar ile harcama analizleri, PDF/Excel raporları oluşturun.  
+  (*Generate spending analysis with charts and tables, create PDF/Excel reports.*)
+
+- **Çoklu Varlık Takibi:** Döviz, kripto para, hisse senedi ve değerli metallerin güncel fiyatlarını takip edin.  
+  (*Track up-to-date prices of currencies, cryptocurrencies, stocks, and precious metals.*)
+
+- **Güvenlik:** AES şifreleme, güçlü parola politikası ve kimlik doğrulama.  
+  (*AES encryption, strong password policies, and authentication.*)
+
+- **Kullanıcı Profili:** Profil düzenleme, parola değiştirme ve kişisel ayarlar.  
+  (*Edit profile, change password, and manage personal settings.*)
 
 ---
 
-##  Kullanılan Teknolojiler
+## Kullanılan Teknolojiler (*Technologies Used*)
 
-- **Backend:** ASP.NET Core 8.0, Entity Framework Core, SQL Server
-- **Frontend:** Razor Pages, Tailwind CSS, Chart.js
-- **Yapay Zeka:** OpenAI GPT-4 API
-- **Raporlama:** QuestPDF, ClosedXML, iText7, PdfSharpCore
-- **Güvenlik:** ASP.NET Identity, AES, BCrypt
-- **Diğer:** Memory Cache, HTTP Client, RESTful API entegrasyonları
+- **Backend:** ASP.NET Core 8.0, Entity Framework Core, SQL Server  
+- **Frontend:** Razor Pages, Tailwind CSS, Chart.js  
+- **Yapay Zeka (AI):** OpenAI GPT-4 API  
+- **Raporlama (Reporting):** QuestPDF, ClosedXML, iText7, PdfSharpCore  
+- **Güvenlik (Security):** ASP.NET Identity, AES, BCrypt  
+- **Diğer (Others):** Memory Cache, HTTP Client, RESTful API entegrasyonları (*integrations*)
 
 ---
 
 ##  Proje Yapısı
-Monexia/     
-├── Controllers/       # Uygulama iş mantığı ve API uç noktaları     
-├── Models/            # Veri modelleri ve ViewModel'ler    
-├── Views/             # Razor tabanlı kullanıcı arayüzü     
-├── Services/          # Servis katmanı (AI, raporlama vb.)    
-├── Helpers/           # Yardımcı fonksiyonlar ve şifreleme    
-├── Data/              # DbContext ve veri erişim katmanı    
-├── wwwroot/           # Statik dosyalar (CSS, JS, görseller)    
-├── Migrations/        # Entity Framework veritabanı migrasyonları    
-├── Program.cs         # Uygulama başlangıç noktası    
-├── appsettings.json   # Konfigürasyon dosyaları    
-└── Monexia.csproj     # Proje yapılandırma dosyası    
+Monexia/
+├── Controllers/ # Uygulama iş mantığı ve API uç noktaları (Application logic and API endpoints)
+├── Models/ # Veri modelleri ve ViewModel'ler (Data models and ViewModels)
+├── Views/ # Razor tabanlı kullanıcı arayüzü (Razor-based user interface)
+├── Services/ # Servis katmanı (AI, raporlama vb.) (Service layer - AI, reporting etc.)
+├── Helpers/ # Yardımcı fonksiyonlar ve şifreleme (Helper functions and encryption)
+├── Data/ # DbContext ve veri erişim katmanı (DbContext and data access layer)
+├── wwwroot/ # Statik dosyalar (CSS, JS, görseller) (Static files - CSS, JS, images)
+├── Migrations/ # Entity Framework veritabanı migrasyonları (Entity Framework database migrations)
+├── Program.cs # Uygulama başlangıç noktası (Application entry point)
+├── appsettings.json # Konfigürasyon dosyaları (Configuration files)
+└── Monexia.csproj # Proje yapılandırma dosyası (Project configuration file)
 
 
 
@@ -69,13 +86,15 @@ Monexia/
 ---
 
 
-## Lisans
+## Lisans (*License*)
 
-Bu projenin lisans durumu için [LICENSE](LICENSE) kısmını kontrol edebilirsiniz.
+Bu projenin lisans durumu için [LICENSE](LICENSE) kısmını kontrol edebilirsiniz.  
+(*For the licensing status of this project, please check the [LICENSE](LICENSE) section.*)
 
 ---
 
-## İletişim
+## İletişim (*Contact*)
 
 Her türlü soru ve öneriniz için:  
-**E-posta:** msemihbulut@gmail.com
+(*For any questions or suggestions:*)  
+**E-posta (Email):** msemihbulut@gmail.com
