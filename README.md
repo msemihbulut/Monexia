@@ -48,7 +48,7 @@ Monexia, kişisel finans yönetimini kolaylaştırmak, harcamalarınızı analiz
 ---
 
 ##  Proje Yapısı
-Monexia/
+Monexia/        
 ├── Controllers/          # Uygulama iş mantığı ve API uç noktaları (Application logic and API endpoints)     
 ├── Models/               # Veri modelleri ve ViewModel'ler (Data models and ViewModels)       
 ├── Views/                # Razor tabanlı kullanıcı arayüzü (Razor-based user interface)       
