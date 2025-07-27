@@ -49,24 +49,24 @@ Monexia, kişisel finans yönetimini kolaylaştırmak, harcamalarınızı analiz
 
 ##  Proje Yapısı
 Monexia/
-├── Controllers/ # Uygulama iş mantığı ve API uç noktaları (Application logic and API endpoints)
-├── Models/ # Veri modelleri ve ViewModel'ler (Data models and ViewModels)
-├── Views/ # Razor tabanlı kullanıcı arayüzü (Razor-based user interface)
-├── Services/ # Servis katmanı (AI, raporlama vb.) (Service layer - AI, reporting etc.)
-├── Helpers/ # Yardımcı fonksiyonlar ve şifreleme (Helper functions and encryption)
-├── Data/ # DbContext ve veri erişim katmanı (DbContext and data access layer)
-├── wwwroot/ # Statik dosyalar (CSS, JS, görseller) (Static files - CSS, JS, images)
-├── Migrations/ # Entity Framework veritabanı migrasyonları (Entity Framework database migrations)
-├── Program.cs # Uygulama başlangıç noktası (Application entry point)
-├── appsettings.json # Konfigürasyon dosyaları (Configuration files)
-└── Monexia.csproj # Proje yapılandırma dosyası (Project configuration file)
+├── Controllers/          # Uygulama iş mantığı ve API uç noktaları (Application logic and API endpoints)
+├── Models/               # Veri modelleri ve ViewModel'ler (Data models and ViewModels)
+├── Views/                # Razor tabanlı kullanıcı arayüzü (Razor-based user interface)
+├── Services/             # Servis katmanı (AI, raporlama vb.) (Service layer - AI, reporting etc.)
+├── Helpers/              # Yardımcı fonksiyonlar ve şifreleme (Helper functions and encryption)
+├── Data/                 # DbContext ve veri erişim katmanı (DbContext and data access layer)
+├── wwwroot/              # Statik dosyalar (CSS, JS, görseller) (Static files - CSS, JS, images)
+├── Migrations/           # Entity Framework veritabanı migrasyonları (Entity Framework database migrations)
+├── Program.cs            # Uygulama başlangıç noktası (Application entry point)
+├── appsettings.json      # Konfigürasyon dosyaları (Configuration files)
+└── Monexia.csproj        # Proje yapılandırma dosyası (Project configuration file)
 
 
 
 ---
 
 
-## Ekran Görüntüleri
+## Ekran Görüntüleri (Screenshots)
 ![image](https://github.com/user-attachments/assets/b3cd491f-ce3f-4ce3-8bdc-4396e7ef6ea8)
 ![image](https://github.com/user-attachments/assets/e6aa2b7f-aaee-4a65-809d-d32c1e7a0b3c)
 ![image](https://github.com/user-attachments/assets/e7376e32-0bf6-4d8f-8d0f-2635845b7dfe)
