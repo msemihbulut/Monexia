@@ -1,4 +1,4 @@
-# Monexia
+# Monexia (English explanations are provided in parentheses.)
 
 **Yapay Zeka Destekli Finansal İşlem Takip ve Harcama Analiz Sistemi**     
 (**AI-Powered Financial Transaction Tracking and Spending Analysis System**)
